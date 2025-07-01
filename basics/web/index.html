@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHARUSAT Student Portal</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .header {
+      background-color: #24b1f7;
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .logo {
+      width: 150px;
+    }
+
+    .title {
+      flex: 1;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .menu {
+      padding: 10px;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+
+    .menu a {
+      margin: 0 15px;
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
+    }
+
+    .content {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background-color: #f9f9f9;
+      box-sizing: border-box;
+    }
+
+    .up, .center, .down {
+      width: 100%;
+      padding: 5px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .center img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .down p {
+      max-width: 1000px;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-align: justify;
+    }
+
+    .footer {
+      background-color: #24b1f7;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="https://akm-img-a-in.tosshub.com/sites/resources/campus/prod/img/logo/2023/8/campuslogo2022120709060160606598529.png" alt="Logo" width="120" height="120">
+    </div>
+    <div class="title">
+      <h1>CHARUSAT STUDENT PORTAL</h1>
+    </div>
+  </div>
+
+  <!-- ✨ Simple hyperlink menu -->
+  <div class="menu">
+    <a href="#">Home</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </div>
+
+  <div class="content">
+    <div class="up">
+      <h2>Welcome to CHARUSAT Student Portal!</h2>
+    </div>
+    <div class="center">
+      <img src="https://www.charusat.ac.in/icSoftComp2024/images/slider-main/charusatgate.png" alt="CHARUSAT Logo" width="900" height="900">
+    </div>
+    <div class="down">
+      <p>
+        CHARUSAT (Charotar University of Science and Technology) is a private university located in Changa, Gujarat, India. Established in 2009, it offers a range of undergraduate and postgraduate programs in engineering, management, pharmacy, and other fields. The university is known for its focus on research, innovation, and industry collaboration, providing students with opportunities to engage in practical learning experiences. CHARUSAT aims to foster a holistic educational environment that prepares students for successful careers in their respective fields.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 CHARUSAT Student Portal. All rights reserved.</p>
+  </div>
+</body>
+</html>
