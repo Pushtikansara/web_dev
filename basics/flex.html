@@ -4,66 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Flexbox Example</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-
-    header {
-      background: #af5050;
-      border-radius: 20px;
-      padding: 20px;
-      text-align: center;
-      color: white;
-      max-width: 600px;
-      margin: 0 auto 30px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-evenly;
-      align-items: flex-start;
-      gap: 20px;
-      padding: 20px;
-      background-color: #834071;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    article {
-      background: #59c2e9;
-      flex: 1 1 250px; /* grow | shrink | base width */
-      padding: 15px;
-      border-radius: 20px;
-      color: #000;
-      max-width: 300px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-
-    article:hover {
-      transform: scale(1.05);
-      background-color: #44afd9;
-    }
-
-    h2 {
-      margin-bottom: 10px;
-    }
-
-    p {
-      line-height: 1.6;
-    }
-  </style>
+  <link rel="stylesheet" href="flex_style.css" />
+   
 </head>
 <body>
   <header>
@@ -73,15 +15,15 @@
   <section>
     <article>
       <h2>First Article</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, omnis.</p>
+      <p>This is first article using flexbox. </p>
     </article>
     <article>
       <h2>Second Article</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, ipsam!</p>
+      <p>This is second article using flexbox. </p>
     </article>
     <article>
       <h2>Third Article</h2>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam, enim.</p>
+      <p>This is third article using flexbox. </p>
     </article>
   </section>
 </body>
