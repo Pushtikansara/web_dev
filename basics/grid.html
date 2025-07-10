@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body{
+            background-color: rgb(2, 144, 253);
+            border: white;
+            display:flex;
+            flex-direction:column;
+            border-radius: 5px;
+            gap:auto;
+        }
+        
+        
+        div{
+            box-sizing: border-box;
+           
+            margin: 0;
+            padding: 0;
+            border: 3px solid rgb(243, 246, 247);
+            border-color: rgb(243, 246, 247);
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            gap:auto;
+        }
+        #container {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+            padding: 1em;
+            box-sizing: border-box;
+            border: 3px solid rgb(234, 239, 240);
+            border-radius:6px;
+            grid-auto-rows:minmax(200px,auto);
+            background-color: rgb(61, 165, 245);
+           
+        }
+        #header,#footer{
+            margin:0;
+        
+            padding:35px;
+        }
+    
+    
+        
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>GRID LAYOUT</h1>
+    </div>
+    <div class="Menu">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+   
+</div>
+    <div id="container">
+        <div>Left content</div>
+        <div>Center content</div>   
+        <div>Right content</div>
+        <div>Left content</div>
+        <div>Center content</div>   
+        <div>Right content</div>
+
+
+    </div>
+    <div id="footer">
+        <p>Footer Content</p>
+
+</body>
+</html>

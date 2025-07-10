@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register | CHARUSAT Student Portal</title>
   <style>
+    :root {
+      --navy: #0b1d3a;
+      --white: #ffffff;
+      --dark-red: #8b0000;
+      --sky-blue: #00cfff;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0b1d3a, #001e3c);
+      color: var(--white);
     }
 
     body {
@@ -20,25 +28,28 @@
     }
 
     .header {
-      background-color: #24b1f7;
-      color: white;
-      text-align: center;
+      background-color: var(--dark-red);
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
     }
 
-    .logo {
-      width: 120px;
+    .logo img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
     }
 
     .title {
       flex: 1;
+      text-align: center;
     }
 
     .title h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 26px;
+      color: var(--white);
     }
 
     .register-container {
@@ -47,21 +58,32 @@
       justify-content: center;
       align-items: center;
       padding: 40px 20px;
+      background-image: url('https://charusat.online/images/4-home/banner-bg.webp');
+      background-size: cover;
+      background-position: center;
     }
 
     .register-box {
-      background-color: white;
+      background-color: #102642;
+      border: 2px solid var(--sky-blue);
       padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 12px;
       width: 100%;
       max-width: 500px;
+      color: var(--white);
+      box-shadow: 0 8px 20px rgba(0, 207, 255, 0.15);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .register-box h2 {
       text-align: center;
       margin-bottom: 25px;
-      color: #24b1f7;
+      color: var(--sky-blue);
     }
 
     .register-box input[type="text"],
@@ -72,23 +94,31 @@
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 6px;
-      box-sizing: border-box;
+      background-color: #f8f9fa;
+      color: #000;
+      font-size: 16px;
+    }
+
+    .register-box input::placeholder {
+      color: #777;
     }
 
     .register-box button {
       width: 100%;
       padding: 12px;
-      background-color: #24b1f7;
-      color: white;
+      background-color: var(--sky-blue);
+      color: var(--navy);
       border: none;
       border-radius: 6px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       margin-top: 15px;
+      transition: background-color 0.3s ease;
     }
 
     .register-box button:hover {
-      background-color: #1a93ce;
+      background-color: #00aadd;
     }
 
     .register-box .link {
@@ -97,19 +127,34 @@
     }
 
     .register-box .link a {
-      color: #24b1f7;
+      color: var(--sky-blue);
       text-decoration: none;
     }
 
+    .register-box .link a:hover {
+      text-decoration: underline;
+    }
+
     .footer {
-      background-color: #24b1f7;
-      color: white;
+      background-color: var(--dark-red);
+      color: var(--white);
       text-align: center;
       padding: 10px;
     }
 
     .footer p {
       margin: 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .register-box {
+        padding: 30px 20px;
+      }
+
+      .title h1 {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
@@ -118,7 +163,7 @@
   <!-- Header -->
   <div class="header">
     <div class="logo">
-      <img src="https://akm-img-a-in.tosshub.com/sites/resources/campus/prod/img/logo/2023/8/campuslogo2022120709060160606598529.png" alt="Logo" width="100" height="100">
+      <img src="https://media.licdn.com/dms/image/v2/C4D0BAQHrWx7lPsWRTA/company-logo_200_200/company-logo_200_200/0/1630576737691/charusatcivil_logo?e=2147483647&v=beta&t=NNxUBYT6OW1FSt06djwi0fkhZIjd7NGpSIA4LRBUWbs" alt="Logo">
     </div>
     <div class="title">
       <h1>CHARUSAT STUDENT PORTAL</h1>
@@ -143,7 +188,7 @@
     </div>
   </div>
 
-  
+  <!-- Footer -->
   <div class="footer">
     <p>&copy; 2025 CHARUSAT Student Portal. All rights reserved.</p>
   </div>
