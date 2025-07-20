@@ -1,0 +1,141 @@
+ :root {
+      --navy: #0b1d3a;
+      --white: #ffffff;
+      --green: #43d39e;
+      --blue: #1e90ff;
+      --gray-bg: #f4f7fa;
+      --text-color: #333;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--gray-bg);
+      color: var(--text-color);
+    }
+
+    /* Sidebar Styling - Unified Layout */
+.sidebar {
+  width: 250px;
+  background-color: var(--navy);
+  padding: 2rem 1rem;
+  color: var(--white);
+  position: fixed;
+  height: 100vh;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 24px;
+  color: var(--green);
+  text-align: center;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 1.2rem;
+}
+
+.sidebar ul li a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 17px;
+  padding: 0.6rem 1rem;
+  display: block;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background-color: #1e3a8a; /* Slightly brighter navy hover */
+  color: var(--green);
+}
+
+
+    /* Main Content Styling: Fully Centered */
+    .main-content {
+      margin-left: 250px;
+      height: 100vh;
+      background-color: var(--gray-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    section {
+      background-color: var(--white);
+      border-left: 6px solid var(--green);
+      border-radius: 12px;
+      padding: 30px;
+      width: 100%;
+      max-width: 700px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    section h2 {
+      margin-top: 0;
+      font-size: 26px;
+      color: var(--green);
+    }
+
+    section p {
+      font-size: 18px;
+      margin: 12px 0;
+      line-height: 1.6;
+    }
+
+    strong {
+      color: var(--blue);
+    }
+
+  
+  
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+  }
+
+  .sidebar ul li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  .sidebar ul li a {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    font-size: 16px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 2rem 1rem;
+  }
+
+
+      .main-content {
+        margin-left: 0;
+        padding: 30px 20px;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+      }
+
+      section {
+        padding: 25px;
+      }
+    }
+  

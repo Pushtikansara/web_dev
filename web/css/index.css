@@ -1,0 +1,146 @@
+ :root {
+     --navy: #0b1d3a;
+  --white: #ffffff;
+  --green: #43d39e;
+  --blue: #1e90ff;
+  --gray-bg: #f4f7fa;
+  --text-color: #333;
+      
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background-color:  #0b1d3a;
+      color: #ffffff;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+     
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      
+    }
+
+    .logo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+       background-color:  #0b1d3a
+    }
+
+    .title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    
+    .color-strip {
+      width: 10px;
+      height: 40px;
+      background-color:#00cfff;
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+
+    .title h1 {
+      font-size: 30px;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .menu {
+      background-color: var(--green);
+      text-align: center;
+      padding: 12px 0;
+     
+    }
+
+    .menu a {
+      color: #ffffff;
+      margin: 0 18px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .menu a:hover {
+      color:var(--navy)
+     
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .up h2 {
+      text-align: center;
+      color: var(--navy);
+      margin-bottom: 20px;
+    }
+
+    .center img {
+      width: 100%;
+      max-height: 500px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .down {
+      margin-top: 30px;
+    }
+
+    .down p {
+      
+      margin: 0 auto;
+      font-size: 17px;
+      line-height: 1.8;
+      text-align: justify;
+      color:#ffffff;
+    }
+
+   
+    .footer {
+      background-color: var(--green);
+      text-align: center;
+      padding: 12px 0;
+     
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .logo img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .title h1 {
+        font-size: 22px;
+      }
+
+      .menu a {
+        display: block;
+        margin: 8px 0;
+      }
+
+      .center img {
+        max-height: 300px;
+      }
+    }
