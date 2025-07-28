@@ -1,0 +1,117 @@
+/* 🧾 Minimal White Layout */
+:root {
+  --primary: #333;
+  --accent: #007acc;
+  --bg: #f2f2f2;
+  --card-bg: #ffffff;
+  --gray: #999;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  background-color: var(--bg);
+  color: var(--primary);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  padding: 20px 0;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 28px;
+
+}
+
+.register-container {
+  flex: 1;
+  display: flex;
+  background-color:  #005fa3;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px;
+}
+
+.register-box {
+  background: var(--card-bg);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  padding: 95px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.05);
+  
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--primary);
+  margin-bottom: 50px;
+  margin-top: 10px;
+  font-size:30px;
+}
+
+.register-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.register-box input::placeholder {
+  color: var(--gray);
+}
+
+.register-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.register-box button:hover {
+  background-color: #005fa3;
+}
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.link a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.link a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+  font-size: 14px;
+}
