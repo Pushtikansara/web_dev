@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | CHARUSAT Student Portal</title>
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <img src="https://media.licdn.com/dms/image/v2/C4D0BAQHrWx7lPsWRTA/company-logo_200_200/company-logo_200_200/0/1630576737691/charusatcivil_logo?e=2147483647&v=beta&t=NNxUBYT6OW1FSt06djwi0fkhZIjd7NGpSIA4LRBUWbs" alt="Logo">
+    </div>
+    <div class="title">
+      <h1>CHARUSAT STUDENT PORTAL</h1>
+    </div>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <input type="text" placeholder="Username" required id="username">
+      <input type="password" placeholder="Password" required id="password">
+      <button type="button" onclick="redirectToDashboard()">Login</button>
+      <div class="link">
+        <p>New user? <a href="register.html">Register here</a></p>
+        <a href="#">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2025 CHARUSAT Student Portal. All rights reserved.</p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function redirectToDashboard() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+
+      if (user && pass) {
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Please enter both username and password!");
+      }
+    }
+  </script>
+
+</body>
+</html>

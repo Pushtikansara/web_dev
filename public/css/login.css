@@ -1,0 +1,146 @@
+:root {
+  --navy: #0b1d3a;
+  --white: #ffffff;
+  --green: #43d39e;
+  --blue: #1e90ff;
+  --gray-bg: #f4f7fa;
+  --text-color: #333;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, var(--navy), #001e3c);
+  color: var(--white);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: var(--navy);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 26px;
+  color: var(--white);
+}
+
+.login-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-image: url('https://charusat.online/images/4-home/banner-bg.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.login-box {
+  background-color: var(--white);
+  border: 2px solid var(--green);
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  color: var(--white);
+  box-shadow: 0 8px 20px rgba(0, 207, 255, 0.15);
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--green);
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: var(--gray-bg);
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+.login-box input::placeholder {
+  color: #777;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.login-box button:hover {
+  background-color: #36b389;
+}
+
+.login-box .link {
+  text-align: center;
+  margin-top: 15px;
+  color: #1e90ff;
+}
+
+.login-box .link a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.login-box .link a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  background-color: var(--navy);
+  color: var(--white);
+  text-align: center;
+  padding: 10px;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .login-box {
+    padding: 30px 20px;
+  }
+
+  .title h1 {
+    font-size: 20px;
+  }
+}
