@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+     <li><a href="profile.html"> Profile</a></li>
+      <li><a href="result.html"> Results</a></li>
+      <li><a href="events.html"> Events</a></li>
+      <li><a href="feedback.html"> Feedback</a></li>
+      
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h1>Welcome, Admin</h1>
+      <p>Here’s an overview of recent activity</p>
+    </header>
+
+    <section class="dashboard-cards">
+      <div class="card">👥 Total Users<br><span>245</span></div>
+      <div class="card">📅 Upcoming Events<br><span>4</span></div>
+      <div class="card">📝 New Feedbacks<br><span>13</span></div>
+      <div class="card">⚙️ Settings Updated<br><span>2</span></div>
+    </section>
+
+    <section class="table-section">
+      <h2>Recent Users</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Joined</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mahek Patel</td>
+            <td>mahek@gmail.com</td>
+            <td><span class="badge active">Active</span></td>
+            <td>July 18, 2025</td>
+          </tr>
+          <tr>
+            <td>Raj Patel</td>
+            <td>raj@gmail.com</td>
+            <td><span class="badge inactive">Inactive</span></td>
+            <td>July 15, 2025</td>
+          </tr>
+          <tr>
+            <td>Reeva Desai</td>
+            <td>anita@gmail.com</td>
+            <td><span class="badge active">Active</span></td>
+            <td>July 10, 2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="notifications">
+      <h2>Notifications</h2>
+      <ul>
+        <li>✅ New user “Mahek Patel” signed up.</li>
+        <li>📢 Upcoming event: "Skill Boost Workshop" on July 25th.</li>
+        <li>✉️ 2 new feedbacks received.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© 2025 Admin Dashboard </p>
+    </footer>
+  </div>
+</body>
+</html>
