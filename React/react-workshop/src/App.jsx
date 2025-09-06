@@ -15,7 +15,7 @@ function App() {
       <h2>Hello</h2>
       <Test/>
       <PrintNames name="Pushti Kansara" des="CEO"/>
-      <PrintNames name="John Doe" des="CTO"/>
+      <PrintNames name="Mahek Patel" des="CTO"/>
     </>
   );
 }
