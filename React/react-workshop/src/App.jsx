@@ -14,8 +14,8 @@ function App() {
       }}>hello world</h1>
       <h2>Hello</h2>
       <Test/>
-      <PrintNames name="Pushti Kansara" des="CEO"/>
-      <PrintNames name="Mahek Saradva" des="CTO"/>
+      <PrintNames name="Pushti" des="CEO"/>
+      <PrintNames name="Mahek " des="CTO"/>
     </>
   );
 }
