@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f8ff;
+            text-align: center;
+            margin-top: 100px;
+        }
+        #para {
+            font-size: 24px;
+            color: #444;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        #btn {
+            padding: 10px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #btn:hover {
+            background-color: #005fa3;
+        }
+    </style>
+</head>
+<body>
+    <p id="para">Hi there 👋</p>
+    <button id="btn">Click Me</button>
+
+    <script>
+        function changetxt() {
+            let para = document.getElementById('para');
+            para.textContent = "✨ You clicked the button! ✨";
+            para.style.color = "green";
+            
+
+        }
+
+        let btn = document.getElementById('btn');
+        btn.addEventListener('click', changetxt);
+         
+    </script>
+</body>
+</html>
