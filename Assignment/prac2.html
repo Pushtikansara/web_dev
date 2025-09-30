@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Theme Style Guide</title>
+    <style>/* ============================== */
+/* 1. Custom Properties (Variables) */
+/* ============================== */
+:root {
+    /* --- Colors (Contrast-Friendly Palette) --- */
+    --color-primary: #007ACC;    /* Blue - Main interactive */
+    --color-secondary: #4CAF50;  /* Green - Success/Secondary */
+    --color-accent: #FF9800;     /* Orange - CTA/Alert */
+    --color-background: #F4F4F9; /* Off-White/Light Gray */
+    --color-text-dark: #212121;  /* Very Dark Gray - Primary Text */
+    --color-text-light: #FFFFFF; /* White - Text on dark backgrounds */
+
+    /* --- Font Stacks --- */
+    --font-heading: 'Montserrat', 'Arial Black', sans-serif;
+    --font-body: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'Fira Code', 'Cousine', monospace; /* Placeholder if Fira Code isn't available */
+
+    /* --- Type Scale (Modular Scale - 1.25 Minor Third) --- */
+    --size-body: 1.0em;    /* 16px base */
+    --size-small: 0.8em;   /* 12.8px */
+    --size-h6: 1.0em;      /* 16px */
+    --size-h5: 1.25em;     /* 20px */
+    --size-h4: 1.563em;    /* 25px */
+    --size-h3: 1.953em;    /* 31.25px */
+    --size-h2: 2.441em;    /* 39.06px */
+    --size-h1: 3.052em;    /* 48.82px */
+
+    /* --- Spacing --- */
+    --spacing-unit: 1rem;
+}
+
+/* ============================== */
+/* 2. Base & Utility Styles */
+/* ============================== */
+body {
+    font-family: var(--font-body);
+    color: var(--color-text-dark);
+    background-color: var(--color-background);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+section {
+    padding: 2rem 0;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ============================== */
+/* 3. Typography Styles */
+/* ============================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+/* Apply Type Scale Variables */
+h1 { font-size: var(--size-h1); }
+h2 { font-size: var(--size-h2); }
+h3 { font-size: var(--size-h3); }
+h4 { font-size: var(--size-h4); }
+h5 { font-size: var(--size-h5); }
+h6 { font-size: var(--size-h6); }
+
+p {
+    font-size: var(--size-body);
+    margin-bottom: var(--spacing-unit);
+}
+
+.small-text {
+    font-size: var(--size-small);
+    color: #666;
+}
+
+.code-block {
+    background-color: #eee;
+    padding: var(--spacing-unit);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    white-space: pre-wrap;
+}
+
+/* ============================== */
+/* 4. Color Palette Display */
+/* ============================== */
+
+.color-swatch-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.color-swatch {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0.5rem;
+    text-align: center;
+}
+
+/* Assigning Color Variables to Swatches */
+.primary { background-color: var(--color-primary); color: var(--color-text-light); }
+.secondary { background-color: var(--color-secondary); color: var(--color-text-light); }
+.accent { background-color: var(--color-accent); color: var(--color-text-dark); }
+.background { background-color: var(--color-background); color: var(--color-text-dark); border: 1px solid #ccc; }
+.text-dark { background-color: var(--color-text-dark); color: var(--color-text-light); }
+.text-light { background-color: var(--color-text-light); color: var(--color-text-dark); border: 1px solid #ccc; }
+
+.contrast-test {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    font-weight: bold;
+}</style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Stellar Theme Style Guide</h1>
+        <p>Core design elements for a clear and accessible interface.</p>
+    </header>
+
+    <section id="colors">
+        <h2>1. Color Palette</h2>
+        <div class="color-swatch-container">
+            <div class="color-swatch primary">Primary (#007ACC)</div>
+            <div class="color-swatch secondary">Secondary (#4CAF50)</div>
+            <div class="color-swatch accent">Accent (#FF9800)</div>
+            <div class="color-swatch background">Background (#F4F4F9)</div>
+            <div class="color-swatch text-dark dark">Text-Dark (#212121)</div>
+            <div class="color-swatch text-light light">Text-Light (#FFFFFF)</div>
+        </div>
+        <p class="contrast-test" style="background-color: var(--color-primary); color: var(--color-text-light);">
+            Example text on Primary background. (Good Contrast)
+        </p>
+        <p class="contrast-test" style="background-color: var(--color-background); color: var(--color-text-dark);">
+            Example text on Background color. (Good Contrast)
+        </p>
+    </section>
+
+    <section id="typography">
+        <h2>2. Typography Scale</h2>
+        <p class="font-test">Heading Font Stack: 'Montserrat', 'Arial Black', sans-serif</p>
+        <p class="font-test">Body Font Stack: 'Roboto', 'Helvetica Neue', Arial, sans-serif</p>
+
+        <h1>H1: The Quick Brown Fox Jumps Over the Lazy Dog.</h1>
+        <h2>H2: The Quick Brown Fox Jumps Over the Lazy Dog.</h2>
+        <h3>H3: The Quick Brown Fox Jumps Over the Lazy Dog.</h3>
+        <h4>H4: The Quick Brown Fox Jumps Over the Lazy Dog.</h4>
+        <h5>H5: The Quick Brown Fox Jumps Over the Lazy Dog.</h5>
+        <h6>H6: The Quick Brown Fox Jumps Over the Lazy Dog.</h6>
+
+        <p>
+            Body Text (1.0em/16px): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam volutpat eleifend sem, in laoreet velit facilisis eget. Fusce tincidunt enim id magna bibendum, vel malesuada nulla interdum. This is an example of <span style="font-weight: bold;">bold text</span> and an <span style="font-style: italic;">italicized phrase</span>.
+        </p>
+        <p class="small-text">
+            Small Text (0.8em): Use this for secondary, non-essential information like captions or disclaimers.
+        </p>
+        <pre class="code-block"><code>
+            .example-code {
+                font-family: var(--font-mono);
+                color: var(--color-primary);
+            }
+        </code></pre>
+    </section>
+
+</body>
+</html>
