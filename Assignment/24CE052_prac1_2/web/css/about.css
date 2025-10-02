@@ -1,0 +1,127 @@
+
+:root {
+  --navy: #0b1d3a;
+  --white: #ffffff;
+  --green: #43d39e;
+  --blue: #1e90ff;
+  --gray-bg: #f4f7fa;
+  --text-color: #333;
+}
+
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0b1d3a, #001e3c);
+      color: var(--white);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header {
+      background-color: var(--navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+
+    .logo img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+    }
+
+    .title {
+      flex: 1;
+      text-align: center;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 26px;
+      color: var(--white);
+    }
+
+    .menu {
+      background-color: var(--green);
+      text-align: center;
+      padding: 12px;
+      box-shadow: 0 4px 8px rgba(0, 207, 255, 0.08);
+    }
+
+    .menu a {
+      margin: 0 15px;
+      color: var(--sky-blue);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .menu a:hover {
+      text-decoration: underline;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+      max-width: 1000px;
+      margin: 30px auto;
+      background-color: var(white);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 207, 255, 0.15);
+      border: 2px solid var(--sky-blue);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .content h2 {
+      color: var(--sky-blue);
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      line-height: 1.7;
+      text-align: justify;
+      color: var(--white);
+    }
+
+    .footer {
+      background-color: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 10px;
+    }
+
+    .footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .title h1 {
+        font-size: 20px;
+      }
+
+      .menu a {
+        display: inline-block;
+        margin: 10px 8px;
+      }
+
+      .content {
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+  

@@ -1,0 +1,136 @@
+:root {
+  --navy: #0b1d3a;
+  --white: #ffffff;
+  --green: #43d39e;
+  --blue: #1e90ff;
+  --gray-bg: #f4f7fa;
+  --text-color: #333;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, var(--navy), #001e3c);
+  color: var(--white);
+  display: flex;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 240px;
+  background-color: #102642;
+  padding: 20px;
+  box-shadow: 4px 0 12px rgba(67, 211, 158, 0.15);
+  border-right: 2px solid var(--green);
+  position: fixed;
+  height: 100vh;
+  overflow: auto;
+}
+
+.sidebar h2 {
+  color: var(--green);
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-align: center;
+  transition: color 0.3s ease;
+  font-weight: 600;
+}
+
+.sidebar h2:hover {
+  color: var(--blue);
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: var(--white);
+  font-size: 18px;
+  padding: 10px 15px;
+  display: block;
+  border-radius: 8px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background-color: rgba(67, 211, 158, 0.1);
+  color: var(--green);
+}
+
+/* Main Content Layout */
+.main-content {
+  margin-left: 240px;
+  padding: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card Style for Sections */
+section {
+  background-color: var(--white);
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.8s ease;
+  color: var(--text-color);
+}
+
+h2 {
+  color: var(--green);
+  margin-top: 0;
+}
+
+p {
+  margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    box-shadow: none;
+    text-align: center;
+  }
+
+  .sidebar ul li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+
+  .sidebar ul li a {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  section {
+    padding: 20px;
+  }
+}
