@@ -1,0 +1,102 @@
+:root {
+  --navy: #0b1d3a;
+  --white: #ffffff;
+  --green: #43d39e;
+  --blue: #1e90ff;
+  --gray-bg: #f4f7fa;
+  --text-color: #333;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--gray-bg);
+  color: var(--text-color);
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+  .sidebar {
+      width: 250px;
+      background-color: #0b1d3a;
+      padding: 2rem 1rem;
+      color: white;
+    }
+
+    .sidebar h2 {
+      color: #34d399;
+      font-size: 24px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #f0f0f0;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      transition: background 0.3s;
+      font-size: 18px;
+      text-decoration: none;
+    }
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  padding: 30px 40px;
+  max-width: 600px;
+  width: 100%;
+  border-left: 5px solid var(--green);
+}
+
+.card h3 {
+  color: var(--green);
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.event-list {
+  padding: 0;
+  list-style-type: none;
+}
+.sidebar ul {
+  list-style-type: none; /* Removes the bullets */
+  padding: 0;            /* Optional: removes extra indentation */
+  margin: 0;             /* Optional: resets any default margin */
+}
+
+
+.event-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+    @media (max-width: 768px) {
+      body {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    text-align: center;
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .main-content {
+    padding: 1rem;
+  }
+    }

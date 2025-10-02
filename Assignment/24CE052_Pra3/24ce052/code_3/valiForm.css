@@ -1,0 +1,231 @@
+/* Simple Professional Theme */
+:root {
+  --primary: #1a2238;           /* Dark blue */
+  --accent: #e94560;            /* Red accent */
+  --accent-hover: #b23a48;      /* Deeper red for hover */
+  --success: #21c97a;           /* Vivid green */
+  --error: #e94560;             /* Red for errors */
+  --green: #21c97a;             /* Green accent */
+  --red: #e94560;               /* Red accent */
+  --text-primary: #f5f6fa;
+  --text-secondary: #bfc9d9;
+  --bg-primary: #f4f8fd;         /* Very light blue background */
+  --bg-secondary: #fff;         /* White for form box */
+  --border: #394063;
+  --shadow: 0 4px 24px 0 rgba(26,34,56,0.25);
+  --glass-bg: rgba(35,43,71,0.92);
+  --glass-border: rgba(233,69,96,0.18);
+  --footer-gradient: linear-gradient(90deg, #1a2238 0%, #394063 100%);
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background: var(--primary);
+  padding: 1.5rem 0;
+  box-shadow: var(--shadow);
+  border-bottom: 2px solid var(--border);
+  filter: none;
+}
+
+.title {
+  text-align: center;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--success);
+  letter-spacing: 1.2px;
+  text-shadow: none;
+}
+
+.register-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background: var(--bg-secondary);
+}
+
+.register-box {
+  background: var(--bg-secondary);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 550px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  position: relative;
+  overflow: hidden;
+}
+.register-box::before {
+  display: none;
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary);
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--text-primary);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--green);
+  background: #232b47;
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+input:nth-of-type(2n) {
+  background: var(--pastel-yellow);
+}
+input:nth-of-type(2n+1) {
+  background: var(--pastel-lavender);
+}
+
+button {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 0.5rem;
+  box-shadow: none;
+  filter: none;
+}
+
+button:hover {
+  background: #179e5c;
+  box-shadow: none;
+}
+
+.link {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.link p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: var(--footer-gradient);
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  border-top: 2px solid var(--border);
+  box-shadow: none;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+  font-weight: 500;
+}
+
+input.error-border {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 2px #ffe5ec !important; /* pastel pink background */
+  background: #fff5f8 !important; /* very light pastel pink */
+}
+
+input.success-border {
+  border-color: var(--success) !important;
+  box-shadow: 0 0 0 2px #e3fcec !important;
+  background: var(--bg-primary) !important;
+}
+
+@media (max-width: 768px) {
+  .register-box {
+    margin: 1rem;
+    padding: 2rem;
+  }
+  .title h1 {
+    font-size: 1.5rem;
+  }
+  .register-box h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-box {
+    padding: 1.2rem;
+  }
+  .title h1 {
+    font-size: 1.1rem;
+  }
+  .register-box h2 {
+    font-size: 1rem;
+  }
+} 

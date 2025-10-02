@@ -1,0 +1,87 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Riya Sharma",
+      "email": "riya@mail.com",
+      "course": "BCA",
+      "year": 2
+    },
+    {
+      "id": 2,
+      "name": "Aman Verma",
+      "email": "aman@mail.com",
+      "course": "B.Sc CS",
+      "year": 3
+    },
+    {
+      "id": 3,
+      "name": "Neha Reddy",
+      "email": "neha@mail.com",
+      "course": "BCA",
+      "year": 1
+    },
+    {
+      "id": 4,
+      "name": "Sagar Nair",
+      "email": "sagar@mail.com",
+      "course": "BSc IT",
+      "year": 2
+    },
+    {
+      "id": 5,
+      "name": "Priya Joshi",
+      "email": "priya@mail.com",
+      "course": "BCA",
+      "year": 3
+    },
+    {
+      "id": 6,
+      "name": "Karan Sing",
+      "email": "karan@mail.com",
+      "course": "B.Tech",
+      "year": 4
+    },
+    {
+      "id": 7,
+      "name": "Diya Patel",
+      "email": "diya@mail.com",
+      "course": "B.Sc CS",
+      "year": 2
+    },
+    {
+      "id": 8,
+      "name": "Vivek Jain",
+      "email": "vivek@mail.com",
+      "course": "BCA",
+      "year": 3
+    }
+  ],
+  "events": [
+    {
+      "event_id": 101,
+      "title": "Tech Fest 2025",
+      "date": "2025-11-10"
+    },
+    {
+      "event_id": 102,
+      "title": "Sports Day",
+      "date": "2025-10-25"
+    },
+    {
+      "event_id": 103,
+      "title": "Cultural Night",
+      "date": "2025-12-05"
+    },
+    {
+      "event_id": 104,
+      "title": "Workshop on AI",
+      "date": "2025-09-20"
+    },
+    {
+      "event_id": 105,
+      "title": "Alumni Meet",
+      "date": "2025-08-15"
+    }
+  ]
+}
