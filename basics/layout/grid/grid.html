@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            border:2px xolid black;
+            display:grid;
+            grid-template-columns:120px 100px;
+           /* divide into two columns */
+           grid-template-rows:100px 100px 100px;
+        }
+        .item{
+            border:2px solid red;
+            height:55px;
+            width:55px;
+          
+        }
+        .item-4{
+            grid-row:2/2;
+            grid-column:1/2;
+            /* 1 to 2 row and column between */
+        }
+        .item-3{
+             grid-row-start:2;
+             grid-row-end:3;
+            grid-column:2/2;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <div class="item">1</div>
+             <div class="item">2</div>
+              <div class="item item-3">3</div> 
+               <div class="item item-4">4</div>
+                <div class="item">5</div>
+        </div>
+    </main>
+</body>
+</html>

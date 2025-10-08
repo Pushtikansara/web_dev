@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; 
+      padding: 0;
+      background: #f4f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Notification */
+    #notification {
+      background: #74addc;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: none;
+      z-index: 1000;
+    }
+
+    /* Main Buttons */
+    .action-buttons {
+      margin: 20px;
+    }
+    .action-buttons button {
+      margin: 10px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #0078D7;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .action-buttons button:hover {
+      background: #005A9E;
+      transform: scale(1.05);
+    }
+
+    /* Image Slider */
+    .slider {
+      max-width: 600px;
+      margin: 100px auto 20px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slides img {
+      width: 600px;
+      height: 300px;
+    }
+    .slider button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* Popup Modal */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+    }
+    .popup .content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 350px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .popup .content input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .popup .content button {
+      margin: 5px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .ok-btn {
+      background: #28a745; 
+      color: white;
+    }
+    .cancel-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    /* FAQ Section */
+    .faq {
+      max-width: 600px;
+      margin: 30px auto;
+    }
+    .faq button {
+      width: 100%;
+      padding: 15px;
+      text-align: left;
+      background: #0078D7;
+      color: white;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      margin-top: 5px;
+      border-radius: 5px;
+    }
+    .faq .answer {
+      display: none;
+      padding: 10px;
+      background: #eaf3ff;
+      border-radius: 0 0 5px 5px;
+    }
+  </style>
+</head>
+<body>
+
+
+  <div id="notification">Welcome to our website! </div>
+
+  <div class="action-buttons">
+    <button onclick="showPopup('alert')">Show Popup</button>
+    <button onclick="showPopup('confirm')">Show Confirm</button>
+    <button onclick="showPopup('input')">Show Input</button>
+    <button onclick="triggerNotification('Custom notification shown! ')">Show Notification</button>
+   <p>ID:24CE052 Name:Pushti</p>
+  </div>
+
+ 
+  <div class="slider">
+    <div class="slides">
+      <img src="https://picsum.photos/id/1018/600/300" alt="Slide 1">
+      <img src="https://picsum.photos/id/1015/600/300" alt="Slide 2">
+      <img src="https://picsum.photos/id/1019/600/300" alt="Slide 3">
+    </div>
+    <button class="prev">❮</button>
+    <button class="next">❯</button>
+  </div>
+
+ 
+  <div id="popup" class="popup">
+    <div class="content" id="popup-content">
+      <!-- Dynamic Content via JS -->
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>FAQs</h2>
+    <button onclick="toggleAnswer(this)">What is HTML?</button>
+    <div class="answer">HTML stands for HyperText Markup Language.</div>
+
+    <button onclick="toggleAnswer(this)">What is CSS?</button>
+    <div class="answer">CSS is used to style and design web pages.</div>
+
+    <button onclick="toggleAnswer(this)">What is JavaScript?</button>
+    <div class="answer">JavaScript makes websites interactive and dynamic.</div>
+  </div>
+
+  <script>
+    // Notification
+    window.onload = () => {
+      triggerNotification("Welcome to our website! ");
+    };
+    function triggerNotification(msg) {
+      let notif = document.getElementById("notification");
+      notif.innerText = msg;
+      notif.style.display = "block";
+      setTimeout(() => { notif.style.display = "none"; }, 3000);
+    }
+
+    // Slider
+    let index = 0;
+    const slides = document.querySelector(".slides");
+    const totalSlides = slides.children.length;
+
+    document.querySelector(".next").onclick = () => {
+      index = (index + 1) % totalSlides;
+      updateSlide();
+    };
+    document.querySelector(".prev").onclick = () => {
+      index = (index - 1 + totalSlides) % totalSlides;
+      updateSlide();
+    };
+    function updateSlide() {
+      slides.style.transform = `translateX(-${index * 600}px)`;
+    }
+
+    // Popup Manager
+    function showPopup(type) {
+      const popup = document.getElementById("popup");
+      const content = document.getElementById("popup-content");
+
+      if(type === "alert") {
+        content.innerHTML = `
+          <h3>Alert</h3>
+          <p>This is a custom popup alert!</p>
+          <button class="ok-btn" onclick="closePopup()">OK</button>
+        `;
+      }
+      if(type === "confirm") {
+        content.innerHTML = `
+          <h3>Confirm</h3>
+          <p>Are you sure you want to continue?</p>
+          <button class="ok-btn" onclick="confirmAction(true)">Yes</button>
+          <button class="cancel-btn" onclick="confirmAction(false)">No</button>
+        `;
+      }
+      if(type === "input") {
+        content.innerHTML = `
+          <h3>Input</h3>
+          <p>Enter your name:</p>
+          <input type="text" id="userInput" placeholder="Type here...">
+          <br>
+          <button class="ok-btn" onclick="submitInput()">Submit</button>
+          <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+        `;
+      }
+
+      popup.style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function confirmAction(choice) {
+      closePopup();
+      if(choice) {
+        triggerNotification("You clicked Yes!");
+      } else {
+        triggerNotification("You clicked No!");
+      }
+    }
+
+    function submitInput() {
+      let val = document.getElementById("userInput").value;
+      closePopup();
+      if(val.trim()) {
+        triggerNotification(" Hello, " + val + "!");
+      } else {
+        triggerNotification("No name entered!");
+      }
+    }
+    function toggleAnswer(btn) {
+      let ans = btn.nextElementSibling;
+      ans.style.display = ans.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</body>
+</html>

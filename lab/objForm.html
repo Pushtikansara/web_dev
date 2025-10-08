@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Form</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .form-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+        width: 500px; /* Extra width */
+        max-width: 95%;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #2a5298;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #2a5298;
+        outline: none;
+        box-shadow: 0px 0px 6px rgba(42, 82, 152, 0.4);
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn {
+        flex: 1;
+        margin: 0 5px;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-submit {
+        background: #2a5298;
+        color: white;
+    }
+
+    .btn-submit:hover {
+        background: #1e3c72;
+    }
+
+    .btn-clear {
+        background: #ff4d4d;
+        color: white;
+    }
+
+    .btn-clear:hover {
+        background: #cc0000;
+    }
+
+    .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        background: #f4f4f4;
+        color: #333;
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Create Object at Runtime</h2>
+    <form id="myForm">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+         <label for="Sid">Student ID:</label>
+         <input type="text" id="Sid" name="Sid" placeholder="Enter your student ID" required>
+
+          <label for="dob">Date of birth:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <label for="address">Message</label>
+        <textarea id="message" name="message" placeholder="Your message" rows="4" required></textarea>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-submit">Submit</button>
+            <button type="button" class="btn btn-clear" id="clearBtn">Clear</button>
+        </div>
+    </form>
+
+    <div class="result" id="resultBox"></div>
+</div>
+
+<script>
+    const form = document.getElementById('myForm');
+    const clearBtn = document.getElementById('clearBtn');
+    const resultBox = document.getElementById('resultBox');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const sid = document.getElementById('Sid').value.trim();
+        const dob = document.getElementById('dob').value;
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (name && sid && dob && email && message) {
+            resultBox.innerHTML = `<strong>Submitted Data:</strong><br>
+                                   Name: ${name}<br>
+                                   Student ID: ${sid}<br>
+                                   Date of Birth: ${dob}<br>
+                                   Email: ${email}<br>
+                                   Message: ${message}`;
+            resultBox.style.display = 'block';
+        }
+    });
+
+    clearBtn.addEventListener('click', function() {
+        form.reset();
+        resultBox.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>

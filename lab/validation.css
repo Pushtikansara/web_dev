@@ -1,0 +1,154 @@
+/* 🌈 Pastel Color Palette */
+:root {
+  --mint: #b2f7ef;
+  --coral: #ffc6c6;
+  --violet: #d5c1e3;
+  --lavender: #f9f3ff;
+  --peach: #ffe2b2;
+  --skyblue: #cce7ff;
+  --white: #ffffff;
+  --gray-dark: #1a1a1a;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, var(--lavender), var(--mint));
+  color: var(--gray-dark);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: var(--violet);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 26px;
+  color: var(--gray-dark);
+}
+
+.register-container {
+  flex: 1;
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+.register-box
+{
+  background-color: var(--coral);
+  border: 2px solid var(--mint);
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  color: var(--gray-dark);
+  
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.8s ease;
+}
+
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color:black;
+}
+
+.register-box input[type="text"],
+.register-box input[type="email"],
+.register-box input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--skyblue);
+  border-radius: 6px;
+  background-color: var(--lavender);
+  color: var(--gray-dark);
+  font-size: 16px;
+}
+
+.register-box input::placeholder {
+  color: #777;
+}
+
+.register-box button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--violet);
+  color: black;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.register-box button:hover {
+  background-color: var(--mint);
+}
+
+.register-box .link {
+  text-align: center;
+  margin-top: 15px;
+  color: black;
+}
+
+.register-box .link a {
+  color: black;
+  text-decoration: none;
+}
+
+.register-box .link a:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  background-color: var(--mint);
+  color: var(--gray-dark);
+  text-align: center;
+  padding: 10px;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .register-box {
+    padding: 30px 20px;
+  }
+
+  .title h1 {
+    font-size: 20px;
+  }
+}
