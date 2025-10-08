@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration</title>
+  <link rel="stylesheet" href="valiForm.css">
+  <script src="valiForm.js" defer></script>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo"></div>
+    <div class="title">
+      <h1>REGISTRATION FORM</h1>
+    </div>
+  </div>
+
+  <div class="register-container">
+    <div class="register-box">
+      <h2>Student Registration</h2>
+      <form action="first.html" method="post" onsubmit="return validateForm()">
+        <label for="fullname">Full Name:</label> <input type="text" id="fullname" name="name" placeholder="Full Name" required>
+       
+        <p><label for="studentid">Student ID:</label></p>
+        <input type="text" id="studentid" name="student_id" placeholder="Student ID" required>
+        <p><label for="email">Email:</label></p>
+        <input type="email" id="email" name="email" placeholder="Email Address" required>
+        <p><label for="username">Username:</label></p>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <p><label for="password">Password:</label></p>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <p><label for="confirmpassword">Confirm Password:</label></p>
+        <input type="password" id="confirmpassword" name="confirm" placeholder="Confirm Password" required>
+        <p><label for="phone">Phone No.:</label></p>
+        <input type="text" id="phone" name="phone" placeholder="Phone No." required>
+        <button type="submit">Register</button>
+        <div class="link">
+          <p>Already have an account? <a href="#">Login here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 All rights reserved.</p>
+  </div>
+
+</body>
+</html>
