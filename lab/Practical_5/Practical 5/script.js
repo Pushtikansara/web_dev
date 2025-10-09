@@ -51,8 +51,8 @@ class DataManager {
         this.studentsData = [
             {
                 id: 101,
-                name: "Aryan Parikh",
-                email: "aryan81006@gmail.com",
+                name: "Raj Sharma",
+                email: "sharma81006@gmail.com",
                 major: "Computer Science",
                 year: "2",
                 gpa: 3.8,
@@ -60,8 +60,8 @@ class DataManager {
             },
             {
                 id: 102,
-                name: "Rudra Parikh",
-                email: "rudra652@gmail.com",
+                name: "Pushti Kansara",
+                email: "pushti652@gmail.com",
                 major: "Artificial Intelligence",
                 year: "1",
                 gpa: 3.9,
