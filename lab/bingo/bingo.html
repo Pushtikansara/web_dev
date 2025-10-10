@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Bingo - C Debugging Challenge | Hackathon Round 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        /* --- Base & Layout --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            color: #374151;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* --- Theme Colors & Shadows --- */
+        :root {
+            --primary-blue: #3B82F6;
+            --secondary-green: #10B981;
+            --light-gray: #F3F4F6;
+            --dark-text: #374151;
+            --light-text: #6B7280;
+        }
+        .header h1, .questions-panel h2, .bingo-panel h2 { color: var(--primary-blue); }
+        .stats-bar, .questions-panel, .bingo-panel { box-shadow: 0 2px 10px rgba(0,0,0,0.1); background: white; border-radius: 15px; }
+        .stat-value { color: var(--primary-blue); }
+        .bingo-cell.correct { background: #D1FAE5; border-color: var(--secondary-green); color: #065F46; }
+        
+        /* --- Questions Panel (Left Side) --- */
+        .questions-panel { padding: 25px; }
+        .questions-container { max-height: 600px; overflow-y: auto; padding-right: 10px; }
+        .question-card { background: var(--light-gray); border: 1px solid #E5E7EB; border-radius: 10px; padding: 15px; margin-bottom: 15px; transition: all 0.3s ease; }
+        .question-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .question-card.completed { background: #D1FAE5; border-color: var(--secondary-green); }
+        .question-number { background: var(--primary-blue); color: white; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9em; }
+        .question-card.completed .question-number { background: var(--secondary-green); }
+        .code-preview { background: white; border: 1px solid #D1D5DB; border-radius: 6px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.85em; color: var(--dark-text); margin: 10px 0; white-space: pre-wrap; overflow-x: auto; }
+        .view-code-btn { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9em; font-weight: 500; transition: all 0.3s ease; }
+        .view-code-btn:hover { background: #2563EB; transform: translateY(-1px); }
+
+        /* --- Bingo Panel (Right Side) --- */
+        .bingo-panel { padding: 25px; }
+        .bingo-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px;
+            background: var(--light-gray); border-radius: 15px; padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .bingo-cell {
+            background: white; border: 2px solid #E5E7EB; border-radius: 10px; padding: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 120px; text-align: center; cursor: pointer;
+        }
+        .bingo-cell:hover { border-color: var(--primary-blue); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); }
+        .bingo-cell.correct { pointer-events: none; } /* Disable interaction on correct cells */
+        /* Removed .cell-question-number from display */
+        .cell-info { font-size: 0.9em; color: var(--light-text); margin-top: 5px; }
+        
+        .bingo-cell.correct .cell-question-number { background: var(--secondary-green); }
+        .cell-answer-input { width: 100%; padding: 8px; border: 1px solid #D1D5DB; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.9em; text-align: center; margin-bottom: 8px; }
+        .cell-answer-input:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        .bingo-cell.correct .cell-answer-input { background: #F0FDF4; border-color: var(--secondary-green); color: #065F46; font-weight: 600; }
+        .cell-submit-btn { background: var(--primary-blue); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8em; font-weight: 500; cursor: pointer; width: 100%; transition: all 0.3s ease; }
+        .cell-submit-btn:hover { background: #2563EB; }
+        .bingo-cell.correct .cell-submit-btn { background: var(--secondary-green); cursor: default; }
+        .cell-checkmark { color: var(--secondary-green); font-size: 1.2em; font-weight: bold; }
+
+        /* --- Modal --- */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: white; margin: 5% auto; padding: 30px; border-radius: 15px; width: 80%; max-width: 800px; max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #E5E7EB; }
+        .modal-title { color: var(--primary-blue); font-size: 1.5em; font-weight: 600; }
+        .close { color: var(--light-text); font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.3s ease; }
+        .close:hover { color: var(--primary-blue); }
+        .modal-code { background: #F8F9FA; border: 1px solid #E5E7EB; border-radius: 8px; padding: 20px; font-family: 'Courier New', monospace; font-size: 1em; line-height: 1.5; white-space: pre-wrap; color: var(--dark-text); margin: 15px 0; border-left: 4px solid var(--primary-blue); }
+        .modal-question { background: var(--light-gray); border-radius: 8px; padding: 15px; margin: 15px 0; color: var(--dark-text); }
+        
+        /* --- Responsiveness --- */
+        @media (max-width: 1024px) {
+            .main-content { grid-template-columns: 1fr; gap: 20px; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .bingo-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; }
+            .bingo-cell { min-height: 100px; padding: 10px; }
+            .cell-answer-input { font-size: 0.8em; padding: 6px; }
+            .cell-submit-btn { padding: 4px 8px; font-size: 0.7em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Code Bingo – C Debugging Challenge</h1>
+            <p>Hackathon Round 2 | Debug, Solve, and Fill the Bingo!</p>
+            <div class="timer">⏱️ Time Remaining: <span id="timer">45:00</span></div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-label">✅ Correct Answers</div>
+                <div class="stat-value" id="correct-count">0/25</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">🎯 Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">🟩 Bingo Lines</div>
+                <div class="stat-value" id="bingo-lines">0</div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>📋 Instructions</h3>
+            <p style="color: var(--light-text);">
+                ✨ Debug the C code snippets listed on the left. Enter the **correct output or issue** in the corresponding Bingo grid box on the right. Correct answers fill the box, aiming for 5 in a row/column/diagonal for **BINGO!**
+            </p>
+        </div>
+
+        <div class="main-content">
+            <div class="questions-panel">
+                <h2>📝 List of 25 Debugging Questions</h2>
+                <div class="questions-container" id="questions-container">
+                    </div>
+            </div>
+
+            <div class="bingo-panel">
+                <h2>🎯 Bingo Grid</h2>
+                <div class="bingo-grid" id="bingo-grid">
+                    </div>
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: var(--light-gray); border-radius: 10px;">
+                    <p style="color: var(--light-text); margin-bottom: 10px;">Enter your answers in the grid boxes corresponding to the Question ID!</p>
+                    <p style="color: var(--primary-blue); font-weight: 500;">Complete a row, column, or diagonal to win! 🎉</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="resetGame()">🔄 Reset Game</button>
+            <button class="btn btn-success" onclick="checkBingo()">🎯 Check Bingo Status</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="bingo-alert" id="bingo-alert">
+        <h2>🎉 BINGO!</h2>
+        <p style="font-size: 1.5em; margin-bottom: 20px;">Congratulations! You've completed a line!</p>
+        <p id="bingo-details" style="font-size: 1.2em; color: var(--light-text);"></p>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-success" onclick="redirectToGoogleForm()" id="submit-btn" style="margin-right: 10px; display: none;">📋 Submit Final Form</button>
+            <button class="btn btn-primary" onclick="closeBingoAlert()">Continue Playing</button>
+        </div>
+    </div>
+
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Question Details</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-question" id="modalQuestion">
+                </div>
+            <div class="modal-code" id="modalCode">
+                </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="view-code-btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bingoQuestions = [
+            { id: 1, title: "Variable Initialization Bug", codePreview: `int main() {\n  int x;\n  printf("%d", x);\n}`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x;  // Bug: uninitialized variable\n  printf("%d", x);\n  return 0;\n}`, question: "What happens when you run this code? (Answer: undefined, garbage, or error)", answer: "undefined", difficulty: "easy" },
+            { id: 2, title: "Assignment vs Comparison", codePreview: `int x = 5;\nif(x = 3)\n  printf("True");\nelse\n  printf("False");`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 5;\n  if(x = 3)  // Bug: assignment instead of comparison\n    printf("True");\n  else\n    printf("False");\n  return 0;\n}`, question: "What is the output of this code?", answer: "True", difficulty: "moderate" },
+            { id: 3, title: "Array Bounds", codePreview: `int arr[3] = {1,2,3};\nprintf("%d", arr[3]);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int arr[3] = {1,2,3};\n  printf("%d", arr[3]);  // Bug: out of bounds access\n  return 0;\n}`, question: "What happens when accessing arr[3]? (Answer: undefined, error, or garbage)", answer: "undefined", difficulty: "moderate" },
+            { id: 4, title: "Infinite Loop Bug", codePreview: `int i = 0;\nwhile(i < 3);\n  printf("%d", i++);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int i = 0;\n  while(i < 3);  // Bug: semicolon creates infinite loop\n    printf("%d", i++);\n  return 0;\n}`, question: "What is the behavior of this code? (Answer: infinite, hangs, or loop)", answer: "infinite", difficulty: "moderate" },
+            { id: 5, title: "Buffer Overflow", codePreview: `char str[5];\nstrcpy(str, "Hello World");`, fullCode: `#include <stdio.h>\n#include <string.h>\n\nint main() {\n  char str[5];\n  strcpy(str, "Hello World");  // Bug: buffer overflow\n  printf("%s", str);\n  return 0;\n}`, question: "What is the main issue here? (Answer: overflow, buffer, or bounds)", answer: "overflow", difficulty: "hard" },
+            { id: 6, title: "Missing Break", codePreview: `int x = 2;\nswitch(x) {\n  case 1: printf("One");\n  case 2: printf("Two");\n  case 3: printf("Three");\n}`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 2;\n  switch(x) {\n    case 1: printf("One");\n    case 2: printf("Two");\n    case 3: printf("Three");\n  }\n  return 0;\n}`, question: "What is the output?", answer: "TwoThree", difficulty: "moderate" },
+            { id: 7, title: "Logical Error (Division)", codePreview: `int x = 5, y = 0;\nif(x > 0 && y/x > 1)\n  printf("Yes");\nelse\n  printf("No");`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 5, y = 0;\n  if(x > 0 && y/x > 1)\n    printf("Yes");\n  else\n    printf("No");\n  return 0;\n}`, question: "What is the output?", answer: "No", difficulty: "easy" },
+            { id: 8, title: "Pointer Arithmetic", codePreview: `int arr[] = {10,20,30};\nint *p = arr;\nprintf("%d", *(p+1));`, fullCode: `#include <stdio.h>\n\nint main() {\n  int arr[] = {10,20,30};\n  int *p = arr;\n  printf("%d", *(p+1));\n  return 0;\n}`, question: "What is the output?", answer: "20", difficulty: "moderate" },
+            { id: 9, title: "Post vs Pre Increment", codePreview: `int x = 5;\nprintf("%d %d", x++, ++x);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 5;\n  printf("%d %d", x++, ++x);\n  return 0;\n}`, question: "What is the output? (Format: 'num num')", answer: "5 7", difficulty: "hard" },
+            { id: 10, title: "Missing Null Terminator", codePreview: `char str[4] = {'H','i','!'};\nprintf("%s", str);`, fullCode: `#include <stdio.h>\n\nint main() {\n  char str[4] = {'H','i','!'};\n  printf("%s", str);\n  return 0;\n}`, question: "What is the issue? (Answer: null, terminator, or garbage)", answer: "null", difficulty: "moderate" },
+            { id: 11, title: "Function Return Bug", codePreview: `int func() {\n  int x = 10;\n}\nprintf("%d", func());`, fullCode: `#include <stdio.h>\n\nint func() {\n  int x = 10;\n}\n\nint main() {\n  printf("%d", func());\n  return 0;\n}`, question: "What is the issue? (Answer: return, missing, or undefined)", answer: "return", difficulty: "easy" },
+            { id: 12, title: "Memory Leak", codePreview: `int *p = malloc(sizeof(int));\n*p = 42;\nprintf("%d", *p);\n// missing free()`, fullCode: `#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n  int *p = malloc(sizeof(int));\n  *p = 42;\n  printf("%d", *p);\n  return 0;\n}`, question: "What is the output and main issue? (Output first, then issue: '42 leak')", answer: "42 leak", difficulty: "hard" },
+            { id: 13, title: "Off-by-One Error", codePreview: `int arr[5] = {1,2,3,4,5};\nfor(int i=0; i<=5; i++)\n  printf("%d", arr[i]);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int arr[5] = {1,2,3,4,5};\n  for(int i=0; i<=5; i++)\n    printf("%d", arr[i]);\n  return 0;\n}`, question: "What is the main issue? (Answer: bounds, off-by-one, or overflow)", answer: "bounds", difficulty: "moderate" },
+            { id: 14, title: "Modulus with Zero", codePreview: `int x = 10, y = 0;\nprintf("%d", x % y);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 10, y = 0;\n  printf("%d", x % y);\n  return 0;\n}`, question: "What happens? (Answer: error, crash, or undefined)", answer: "error", difficulty: "easy" },
+            { id: 15, title: "Dangling Pointer", codePreview: `int *p;\n{\n  int x = 10;\n  p = &x;\n}\nprintf("%d", *p);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int *p;\n  {\n    int x = 10;\n    p = &x;\n  }\n  printf("%d", *p);\n  return 0;\n}`, question: "What is the issue? (Answer: dangling, scope, or undefined)", answer: "dangling", difficulty: "hard" },
+            { id: 16, title: "Format Specifier Mismatch", codePreview: `float f = 3.14;\nprintf("%d", f);`, fullCode: `#include <stdio.h>\n\nint main() {\n  float f = 3.14;\n  printf("%d", f);\n  return 0;\n}`, question: "What is the issue? (Answer: format, specifier, or mismatch)", answer: "format", difficulty: "moderate" },
+            { id: 17, title: "Wrong Operator Precedence", codePreview: `int x = 2 + 3 * 4;\nprintf("%d", x);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 2 + 3 * 4;\n  printf("%d", x);\n  return 0;\n}`, question: "What is the output?", answer: "14", difficulty: "easy" },
+            { id: 18, title: "Semicolon After if", codePreview: `int x = 5;\nif(x > 3);\n  printf("Greater");`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 5;\n  if(x > 3);\n    printf("Greater");\n  return 0;\n}`, question: "What is the output?", answer: "Greater", difficulty: "moderate" },
+            { id: 19, title: "Array Initialization", codePreview: `int arr[3];\nprintf("%d", arr[0]);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int arr[3];\n  printf("%d", arr[0]);\n  return 0;\n}`, question: "What is the issue? (Answer: uninitialized, garbage, or undefined)", answer: "uninitialized", difficulty: "easy" },
+            { id: 20, title: "Wrong Loop Condition", codePreview: `for(int i=1; i<1; i++)\n  printf("%d", i);`, fullCode: `#include <stdio.h>\n\nint main() {\n  for(int i=1; i<1; i++)\n    printf("%d", i);\n  return 0;\n}`, question: "What is the output? (Answer: nothing, empty, or none)", answer: "nothing", difficulty: "easy" },
+            { id: 21, title: "Bitwise vs Logical", codePreview: `int x = 1, y = 2;\nif(x & y)\n  printf("True");\nelse\n  printf("False");`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 1, y = 2;\n  if(x & y)\n    printf("True");\n  else\n    printf("False");\n  return 0;\n}`, question: "What is the output?", answer: "False", difficulty: "moderate" },
+            { id: 22, title: "String Comparison Bug", codePreview: `char str1[] = "hello";\nchar str2[] = "hello";\nif(str1 == str2)`, fullCode: `#include <stdio.h>\n#include <string.h>\n\nint main() {\n  char str1[] = "hello";\n  char str2[] = "hello";\n  if(str1 == str2)\n    printf("Equal");\n  else\n    printf("Not Equal");\n  return 0;\n}`, question: "What is the output?", answer: "Not Equal", difficulty: "moderate" },
+            { id: 23, title: "Integer Division", codePreview: `int x = 7, y = 2;\nprintf("%.1f", x/y);`, fullCode: `#include <stdio.h>\n\nint main() {\n  int x = 7, y = 2;\n  printf("%.1f", x/y);\n  return 0;\n}`, question: "What is the output?", answer: "3.0", difficulty: "moderate" },
+            { id: 24, title: "Recursive Stack Overflow", codePreview: `void func() {\n  printf("Hi");\n  func();\n}\nfunc();`, fullCode: `#include <stdio.h>\n\nvoid func() {\n  printf("Hi");\n  func();\n}\n\nint main() {\n  func();\n  return 0;\n}`, question: "What happens? (Answer: overflow, stack, or infinite)", answer: "overflow", difficulty: "hard" },
+            { id: 25, title: "Global vs Local Scope", codePreview: `int x = 5;\nvoid func() {\n  int x = 10;\n  printf("%d", x);\n}\nfunc();`, fullCode: `#include <stdio.h>\n\nint x = 5;\n\nvoid func() {\n  int x = 10;\n  printf("%d", x);\n}\n\nint main() {\n  func();\n  return 0;\n}`, question: "What is the output?", answer: "10", difficulty: "easy" }
+        ];
+
+        let gameState = {
+            correctAnswers: 0,
+            score: 0,
+            bingoLines: 0,
+            completedCells: new Array(25).fill(false),
+            questionToBlockMapping: {}, 
+            blockToQuestionMapping: {},  
+            answeredQuestions: new Set(), 
+            questionIndex: 0 
+        };
+
+        const GOOGLE_FORM_URL = "https://forms.google.com/YOUR_FORM_ID_HERE";
+        const TIMER_DURATION = 2700; // 45 minutes in seconds
+        let timerInterval;
+
+        // --- Core Game Initialization ---
+        function initGame() {
+            startTimer();
+            generateRandomMapping();
+            renderBingoGrid();
+            renderQuestionsList();
+            updateStats();
+        }
+
+        function startTimer() {
+            let time = TIMER_DURATION;
+            const timerElement = document.getElementById('timer');
+
+            const updateDisplay = () => {
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            };
+
+            updateDisplay();
+
+            timerInterval = setInterval(() => {
+                time--;
+                updateDisplay();
+
+                if (time <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up! The challenge is over.");
+                }
+            }, 1000);
+        }
+
+        function generateRandomMapping() {
+            const blockPositions = Array.from({length: 25}, (_, i) => i);
+            const shuffledPositions = blockPositions.sort(() => Math.random() - 0.5);
+            
+            bingoQuestions.forEach((question, index) => {
+                const blockPosition = shuffledPositions[index];
+                gameState.questionToBlockMapping[question.id] = blockPosition;
+                gameState.blockToQuestionMapping[blockPosition] = question;
+            });
+        }
+
+        // --- Rendering Functions ---
+
+        function renderQuestionsList() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            bingoQuestions.forEach(question => {
+                const linkedBlockIndex = gameState.questionToBlockMapping[question.id];
+                const isCompleted = gameState.completedCells[linkedBlockIndex];
+                
+                const card = document.createElement('div');
+                card.className = `question-card ${isCompleted ? 'completed' : ''}`;
+                card.id = `q-card-${question.id}`;
+
+                const codeSnippet = question.codePreview || question.code || "Code snippet not available.";
+
+                card.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">Q ID: ${question.id}</span>
+                        <span style="font-size: 0.8em; color: ${isCompleted ? '#065F46' : 'var(--light-text)'}; font-weight: 500;">
+                            Block: ${linkedBlockIndex + 1}
+                        </span>
+                    </div>
+                    <p style="font-weight: 600; font-size: 0.9em; margin-bottom: 5px;">${question.title}</p>
+                    <div class="code-preview">
+                        ${escapeHtml(codeSnippet)}
+                    </div>
+                    <button class="view-code-btn" onclick="openModal(${question.id})">
+                        View Full Code & Question
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBingoGrid() {
+            const grid = document.getElementById('bingo-grid');
+            grid.innerHTML = '';
+
+            for (let blockIndex = 0; blockIndex < 25; blockIndex++) {
+                const cell = document.createElement('div');
+                cell.className = 'bingo-cell';
+                cell.setAttribute('data-block', blockIndex);
+                
+                const question = gameState.blockToQuestionMapping[blockIndex];
+                const isCompleted = gameState.completedCells[blockIndex];
+
+                if (isCompleted) {
+                    cell.classList.add('correct');
+                    cell.innerHTML = `
+                        <p style="font-weight: bold; margin-top: 5px; font-size: 1.1em;">
+                            ${question.answer.toUpperCase()}
+                        </p>
+                        <span class="cell-checkmark">✓ SOLVED</span>
+                    `;
+                } else {
+                    cell.innerHTML = `
+                        <p class="cell-info">Block ${blockIndex + 1}</p>
+                        <input 
+                            type="text" 
+                            class="cell-answer-input" 
+                            id="input-${blockIndex}"
+                            placeholder="Answer..."
+                            onkeypress="handleCellKeyPress(event, ${blockIndex})"
+                        >
+                        <button class="cell-submit-btn" onclick="submitCellAnswer(${blockIndex})">
+                            Submit
+                        </button>
+                    `;
+                }
+
+                grid.appendChild(cell);
+            }
+        }
+
+        // --- Interaction Functions ---
+
+        function handleCellKeyPress(event, blockIndex) {
+            if (event.key === 'Enter') {
+                submitCellAnswer(blockIndex);
+            }
+        }
+
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+        }
+
+        function submitCellAnswer(blockIndex) {
+            const input = document.getElementById(`input-${blockIndex}`);
+            const userAnswer = input.value;
+            const question = gameState.blockToQuestionMapping[blockIndex];
+
+            if (!userAnswer) {
+                input.style.borderColor = 'red';
+                input.style.animation = 'shake 0.3s';
+                setTimeout(() => {
+                    input.style.borderColor = '#D1D5DB';
+                    input.style.animation = '';
+                }, 300);
+                return;
+            }
+
+            const normalizedUserAnswer = normalizeAnswer(userAnswer);
+            const normalizedCorrectAnswer = normalizeAnswer(question.answer);
+
+            if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                gameState.completedCells[blockIndex] = true;
+                gameState.correctAnswers++;
+                
+                const difficulty = question.difficulty;
+                if (difficulty === 'easy') gameState.score += 1;
+                else if (difficulty === 'moderate') gameState.score += 2;
+                else if (difficulty === 'hard') gameState.score += 3;
+
+                renderBingoGrid();
+                renderQuestionsList();
+                updateStats();
+                setTimeout(checkForBingo, 300);
+
+            } else {
+                input.style.borderColor = '#ff6b6b';
+                input.style.animation = 'shake 0.5s';
+                
+                setTimeout(() => {
+                    input.style.borderColor = '#D1D5DB';
+                    input.style.animation = '';
+                }, 500);
+                
+                alert('❌ Incorrect! Try again.');
+            }
+        }
+        
+        // --- Modal Functions ---
+
+        function openModal(questionId) {
+            const question = bingoQuestions.find(q => q.id === questionId);
+            const modal = document.getElementById('codeModal');
+
+            document.getElementById('modalTitle').textContent = `Q ID: ${question.id} - ${question.title}`;
+            document.getElementById('modalQuestion').textContent = question.question;
+            document.getElementById('modalCode').innerHTML = escapeHtml(question.fullCode);
+
+            modal.style.display = 'block';
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('codeModal').style.display = 'none';
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('codeModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // --- Game Logic Functions (Bingo, Stats, Reset) ---
+
+        function checkForBingo() {
+            const previousLines = gameState.bingoLines;
+            let lines = 0;
+            const cells = gameState.completedCells;
+
+            // Check Rows, Columns, and Diagonals
+            for (let i = 0; i < 5; i++) {
+                if (cells.slice(i * 5, i * 5 + 5).every(c => c)) lines++; // Rows
+            }
+            for (let j = 0; j < 5; j++) { // Columns
+                let colComplete = true;
+                for (let i = 0; i < 5; i++) { if (!cells[i * 5 + j]) { colComplete = false; break; } }
+                if (colComplete) lines++;
+            }
+            let diag1Complete = true, diag2Complete = true;
+            for (let i = 0; i < 5; i++) {
+                if (!cells[i * 5 + i]) diag1Complete = false;
+                if (!cells[i * 5 + (4 - i)]) diag2Complete = false;
+            }
+            if (diag1Complete) lines++;
+            if (diag2Complete) lines++;
+
+            gameState.bingoLines = lines;
+
+            if (lines > previousLines) {
+                gameState.score += 5 * (lines - previousLines);
+                showBingoAlert();
+            }
+
+            updateStats();
+        }
+
+        function showBingoAlert() {
+            const alert = document.getElementById('bingo-alert');
+            const overlay = document.getElementById('overlay');
+            const details = document.getElementById('bingo-details');
+            const submitBtn = document.getElementById('submit-btn');
+
+            details.innerHTML = `
+                You have ${gameState.bingoLines} BINGO line(s) completed! (+5 points per line)<br>
+                <strong>🎉 Congratulations! You've achieved BINGO!</strong>
+            `;
+            submitBtn.style.display = 'inline-block';
+
+            overlay.classList.add('show');
+            alert.classList.add('show');
+        }
+
+        function closeBingoAlert() {
+            document.getElementById('bingo-alert').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        function checkBingo() {
+            if (gameState.bingoLines > 0) {
+                showBingoAlert();
+            } else {
+                alert('No BINGO yet! Keep solving to complete a row, column, or diagonal.');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('correct-count').textContent = `${gameState.correctAnswers}/25`;
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('bingo-lines').textContent = gameState.bingoLines;
+        }
+
+        function resetGame() {
+            if (confirm('Are you sure you want to reset the game? All progress will be lost.')) {
+                clearInterval(timerInterval);
+                gameState = {
+                    correctAnswers: 0,
+                    score: 0,
+                    bingoLines: 0,
+                    completedCells: new Array(25).fill(false),
+                    questionToBlockMapping: {},
+                    blockToQuestionMapping: {},
+                    answeredQuestions: new Set()
+                };
+                initGame();
+            }
+        }
+
+        function redirectToGoogleForm() {
+            const urlWithData = `${GOOGLE_FORM_URL}?usp=pp_url&entry.score=${gameState.score}&entry.correct=${gameState.correctAnswers}&entry.lines=${gameState.bingoLines}`;
+            alert(`🎉 Submitting Score:\nCorrect Answers: ${gameState.correctAnswers}/25\nTotal Score: ${gameState.score}\nBingo Lines: ${gameState.bingoLines}`);
+            window.open(GOOGLE_FORM_URL, '_blank');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text.replace(/ /g, '\u00a0'); 
+            return div.innerHTML;
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>

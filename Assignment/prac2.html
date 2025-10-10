@@ -4,40 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stellar Theme Style Guide</title>
-    <style>/* ============================== */
-/* 1. Custom Properties (Variables) */
-/* ============================== */
+    <style>
 :root {
-    /* --- Colors (Contrast-Friendly Palette) --- */
-    --color-primary: #007ACC;    /* Blue - Main interactive */
-    --color-secondary: #4CAF50;  /* Green - Success/Secondary */
-    --color-accent: #FF9800;     /* Orange - CTA/Alert */
-    --color-background: #F4F4F9; /* Off-White/Light Gray */
-    --color-text-dark: #310404ff;  /* Very Dark Gray - Primary Text */
-    --color-text-light: #FFFFFF; /* White - Text on dark backgrounds */
+    --color-primary: #007ACC;
+    --color-secondary: #4CAF50;
+    --color-accent: #FF9800;
+    --color-background: #F4F4F9;
+    --color-text-dark: #310404ff;
+    --color-text-light: #FFFFFF;
 
-    /* --- Font Stacks --- */
     --font-heading: 'Montserrat', 'Arial Black', sans-serif;
     --font-body: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-    --font-mono: 'Fira Code', 'Cousine', monospace; /* Placeholder if Fira Code isn't available */
+    --font-mono: 'Fira Code', 'Cousine', monospace;
 
-    /* --- Type Scale (Modular Scale - 1.25 Minor Third) --- */
-    --size-body: 1.0em;    /* 16px base */
-    --size-small: 0.8em;   /* 12.8px */
-    --size-h6: 1.0em;      /* 16px */
-    --size-h5: 1.25em;     /* 20px */
-    --size-h4: 1.563em;    /* 25px */
-    --size-h3: 1.953em;    /* 31.25px */
-    --size-h2: 2.441em;    /* 39.06px */
-    --size-h1: 3.052em;    /* 48.82px */
+    --size-body: 1.0em;
+    --size-small: 0.8em;
+    --size-h6: 1.0em;
+    --size-h5: 1.25em;
+    --size-h4: 1.563em;
+    --size-h3: 1.953em;
+    --size-h2: 2.441em;
+    --size-h1: 3.052em;
 
-    /* --- Spacing --- */
     --spacing-unit: 1rem;
 }
 
-/* ============================== */
-/* 2. Base & Utility Styles */
-/* ============================== */
 body {
     font-family: var(--font-body);
     color: var(--color-text-dark);
@@ -52,10 +43,6 @@ section {
     border-bottom: 1px solid #ddd;
 }
 
-/* ============================== */
-/* 3. Typography Styles */
-/* ============================== */
-
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--color-primary);
@@ -65,7 +52,6 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
-/* Apply Type Scale Variables */
 h1 { font-size: var(--size-h1); }
 h2 { font-size: var(--size-h2); }
 h3 { font-size: var(--size-h3); }
@@ -91,10 +77,6 @@ p {
     white-space: pre-wrap;
 }
 
-/* ============================== */
-/* 4. Color Palette Display */
-/* ============================== */
-
 .color-swatch-container {
     display: flex;
     flex-wrap: wrap;
@@ -115,7 +97,6 @@ p {
     text-align: center;
 }
 
-/* Assigning Color Variables to Swatches */
 .primary { background-color: var(--color-primary); color: var(--color-text-light); }
 .secondary { background-color: var(--color-secondary); color: var(--color-text-light); }
 .accent { background-color: var(--color-accent); color: var(--color-text-dark); }
@@ -128,7 +109,24 @@ p {
     margin: 1rem 0;
     border-radius: 4px;
     font-weight: bold;
-}</style>
+}
+
+/* Styles for the right-corner ID "24Ce052" using attribute selector (ID starts with a digit) */
+[id="24Ce052"] {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background-color: var(--color-accent);
+    color: var(--color-text-light);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    font-family: var(--font-heading);
+    letter-spacing: 0.4px;
+}
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -144,8 +142,8 @@ p {
             <div class="color-swatch secondary">Secondary (#4CAF50)</div>
             <div class="color-swatch accent">Accent (#FF9800)</div>
             <div class="color-swatch background">Background (#F4F4F9)</div>
-            <div class="color-swatch text-dark dark">Text-Dark (#212121)</div>
-            <div class="color-swatch text-light light">Text-Light (#FFFFFF)</div>
+            <div class="color-swatch text-dark">Text-Dark (#212121)</div>
+            <div class="color-swatch text-light">Text-Light (#FFFFFF)</div>
         </div>
         <p class="contrast-test" style="background-color: var(--color-primary); color: var(--color-text-light);">
             Example text on Primary background. (Good Contrast)
@@ -181,5 +179,6 @@ p {
         </code></pre>
     </section>
 
+    <div id="24Ce052">24Ce052</div>
 </body>
 </html>
