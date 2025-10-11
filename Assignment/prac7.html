@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Events by Month</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--accent:#007ACC;--muted:#6b7280;--glass:rgba(2,6,23,0.06);--accent-2:#4CAF50;font-family:Inter, Roboto, Arial, sans-serif}
+html,body{height:100%;margin:0;background:var(--bg);padding:24px;box-sizing:border-box}
+.wrap{max-width:980px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+h1{margin:0;color:var(--accent);font-size:20px}
+.controls{display:flex;gap:8px;align-items:center}
+.container{display:grid;grid-template-columns:1fr 320px;gap:18px}
+.main{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.06)}
+.aside{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.04);height:max-content}
+.month{margin-bottom:18px}
+.month h2{margin:0 0 10px 0;font-size:16px;color:#0b3d27}
+.event{display:flex;justify-content:space-between;gap:12px;padding:10px;border-radius:8px;border:1px solid #eef2f4;margin-bottom:8px;background:#fff}
+.event .left{flex:1}
+.event .title{font-weight:700;color:#102a43}
+.event .meta{font-size:13px;color:var(--muted);margin-top:6px}
+.event .date{white-space:nowrap;font-weight:700;color:var(--accent-2)}
+.filter-row{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+.select{padding:8px;border-radius:8px;border:1px solid #e6eef6;background:#fff}
+.empty{color:var(--muted);padding:12px;border-radius:8px;background:#fbfdff;border:1px dashed #e6eef6;text-align:center}
+#24Ce052{position:fixed;top:12px;right:12px;background:var(--accent-2);color:#fff;padding:8px 12px;border-radius:6px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:9999}
+@media (max-width:920px){.container{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap" id="events-root" role="application" aria-labelledby="title">
+  <div class="header">
+    <div>
+      <h1 id="title">Events — Grouped by Month</h1>
+      <div style="font-size:13px;color:var(--muted)">Parsed, grouped and formatted dates (defensive)</div>
+    </div>
+    <div class="controls">
+      <label for="monthFilter" style="font-size:13px;color:var(--muted)">Show:</label>
+      <select id="monthFilter" class="select" aria-label="Filter months">
+        <option value="all">All months</option>
+        <option value="recent">Last 30 days</option>
+      </select>
+      <button id="refresh" class="select" type="button" aria-label="Refresh data" style="cursor:pointer">Refresh</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <main class="main" id="main" role="main" aria-live="polite"></main>
+
+    <aside class="aside" id="aside" role="complementary">
+      <div style="font-weight:700;margin-bottom:8px">Summary</div>
+      <div id="summary" style="font-size:13px;color:var(--muted)"></div>
+      <div style="margin-top:12px">
+        <div style="font-weight:700;margin-bottom:6px">Available months</div>
+        <div id="monthsList" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div id="24Ce052" aria-hidden="true">24Ce052</div>
+
+<script>
+const inlineJSON = `[
+  {"id":1,"title":"Diwali Community Meetup","date":"2025-11-01T18:30:00","location":"Delhi","organizer":"Rahul Kumar"},
+  {"id":2,"title":"Tech Talk: Modern JS","date":"2025-09-12T10:00:00","location":"Bengaluru","organizer":"Neelam Sharma"},
+  {"id":3,"title":"Startup Pitch Night","date":"2025-09-25T19:00:00","location":"Mumbai","organizer":"Rohit Singh"},
+  {"id":4,"title":"Design Workshop","date":"2025-08-20T14:00:00","location":"Chennai","organizer":"Priya Nair"},
+  {"id":5,"title":"Music Festival","date":"2025-09-05T17:00:00","location":"Pune","organizer":"Aakash Mehra"},
+  {"id":6,"title":"AI Roundtable","date":"2025-10-10T09:30:00","location":"Hyderabad","organizer":"Sonal Rao"},
+  {"id":7,"title":"Community Clean-up","date":"2025-09-30T07:00:00","location":"Ahmedabad","organizer":"Vikram Patel"},
+  {"id":8,"title":"Photography Walk","date":"2025-08-28T06:30:00","location":"Kolkata","organizer":"Priya Das"},
+  {"id":9,"title":"Healthcare Camp","date":"invalid-date","location":"Patna","organizer":"Suresh Kumar"},
+  {"id":10,"title":"Book Reading","date":"2025-09-18T18:00:00","location":"Lucknow","organizer":"Neha Verma"}
+]`;
+
+const elMain = document.getElementById('main');
+const elSummary = document.getElementById('summary');
+const elMonthsList = document.getElementById('monthsList');
+const monthFilter = document.getElementById('monthFilter');
+const refreshBtn = document.getElementById('refresh');
+
+const safeParse = s => {
+  try { const parsed = typeof s === 'string' ? JSON.parse(s) : s; return Array.isArray(parsed) ? parsed : []; } catch { return []; }
+};
+
+const isValidDate = d => d instanceof Date && !isNaN(d.getTime());
+
+const normalizeEvents = raw => {
+  const arr = Array.isArray(raw) ? raw : [];
+  return arr.map(item => {
+    const date = item && item.date ? new Date(item.date) : null;
+    return {
+      id: item && item.id != null ? item.id : Math.random().toString(36).slice(2,8),
+      title: item && item.title ? String(item.title) : 'Untitled',
+      location: item && item.location ? String(item.location) : 'Unknown',
+      organizer: item && item.organizer ? String(item.organizer) : '',
+      date: isValidDate(date) ? date : null,
+      raw: item
+    };
+  }).filter(e => e.date !== null);
+};
+
+const monthKey = dt => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+
+const monthLabel = dt => new Intl.DateTimeFormat('en-IN', { month:'long', year:'numeric' }).format(dt);
+
+const groupByMonth = events => {
+  return events.reduce((acc, ev) => {
+    const key = monthKey(ev.date);
+    if (!acc[key]) acc[key] = { label: monthLabel(ev.date), date: new Date(ev.date.getFullYear(), ev.date.getMonth(), 1), items: [] };
+    acc[key].items.push(ev);
+    return acc;
+  }, {});
+};
+
+const sortGroupsDesc = groupsObj => Object.values(groupsObj).sort((a,b) => b.date - a.date);
+
+const formatEventDate = d => new Intl.DateTimeFormat('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }).format(d);
+
+const render = eventsRaw => {
+  const normalized = normalizeEvents(eventsRaw);
+  const total = normalized.length;
+  const totalUpcoming = normalized.filter(e => e.date >= new Date()).length;
+  elSummary.innerHTML = `Total events: ${total}<br>Upcoming: ${totalUpcoming}`;
+
+  const groups = groupByMonth(normalized);
+  const ordered = sortGroupsDesc(groups);
+
+  const filterMode = monthFilter.value;
+  const thirtyDaysAgo = (() => { const d = new Date(); d.setDate(d.getDate() - 30); return d; })();
+
+  elMain.innerHTML = '';
+  elMonthsList.innerHTML = '';
+
+  ordered.forEach(g => {
+    const items = g.items.slice().sort((a,b) => b.date - a.date);
+    const filteredItems = filterMode === 'recent' ? items.filter(i => i.date >= thirtyDaysAgo) : items;
+    if (filteredItems.length === 0) return;
+    const monthDiv = document.createElement('section');
+    monthDiv.className = 'month';
+    const h = document.createElement('h2');
+    h.textContent = g.label;
+    monthDiv.appendChild(h);
+    filteredItems.forEach(ev => {
+      const evDiv = document.createElement('div');
+      evDiv.className = 'event';
+      evDiv.innerHTML = `<div class="left"><div class="title">${ev.title}</div><div class="meta">${ev.location} · ${ev.organizer}</div></div><div class="date">${formatEventDate(ev.date)}</div>`;
+      monthDiv.appendChild(evDiv);
+    });
+    elMain.appendChild(monthDiv);
+
+    const monthBtn = document.createElement('button');
+    monthBtn.type = 'button';
+    monthBtn.textContent = `${g.label} (${g.items.length})`;
+    monthBtn.className = 'select';
+    monthBtn.addEventListener('click', () => {
+      const y = g.date.getFullYear();
+      const m = g.date.getMonth();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const targets = Array.from(document.querySelectorAll('.month h2'));
+      const target = targets.find(t => t.textContent === g.label);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    elMonthsList.appendChild(monthBtn);
+  });
+
+  if (!elMain.children.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty';
+    empty.textContent = 'No events to display';
+    elMain.appendChild(empty);
+  }
+};
+
+const tryFetchThenInline = async () => {
+  try {
+    const res = await fetch('events.json', { cache:'no-cache' });
+    if (!res.ok) throw new Error('no fetch');
+    const txt = await res.text();
+    const parsed = safeParse(txt);
+    if (parsed.length) { render(parsed); return; }
+  } catch (e) {}
+  const parsedInline = safeParse(inlineJSON);
+  render(parsedInline);
+};
+
+monthFilter.addEventListener('change', () => tryFetchThenInline());
+refreshBtn.addEventListener('click', () => tryFetchThenInline());
+
+tryFetchThenInline();
+</script>
+</body>
+</html>

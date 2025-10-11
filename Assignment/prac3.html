@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>5-Question MCQ Quiz</title>
+    <style>
+        :root{
+            --bg:#f7f9fc;
+            --card:#ffffff;
+            --primary:#007ACC;
+            --accent:#4CAF50;
+            --muted:#6b7280;
+            --danger:#ef4444;
+            --glass: rgba(0,0,0,0.04);
+            font-family: Inter, Roboto, Arial, sans-serif;
+        }
+        html,body{height:100%;margin:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+        #quiz-root{width:100%;max-width:760px;background:var(--card);box-shadow:0 6px 22px rgba(12,23,36,0.08);border-radius:12px;padding:22px;box-sizing:border-box}
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+        h1{font-size:18px;margin:0;color:var(--primary)}
+        #progress{font-size:13px;color:var(--muted)}
+        #question-card{padding:16px;border-radius:8px;background:linear-gradient(180deg,var(--card),#fbfdff);box-shadow:0 1px 0 var(--glass);min-height:150px}
+        #q-text{font-weight:600;margin:0 0 12px 0;font-size:16px;color:#102a43}
+        .choices{display:flex;flex-direction:column;gap:10px;margin:8px 0}
+        .choice{display:flex;align-items:center;padding:10px;border-radius:8px;border:1px solid transparent;cursor:pointer;background:transparent;transition:all .15s}
+        .choice:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(2,6,23,0.06)}
+        .choice input{margin-right:12px}
+        .choice.selected{border-color:var(--primary);background:rgba(0,122,204,0.06)}
+        .controls{display:flex;justify-content:space-between;align-items:center;margin-top:14px;gap:10px}
+        .btn{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+        .btn:disabled{opacity:.5;cursor:not-allowed}
+        #prevBtn{background:#eef2f7;color:#16324f}
+        #nextBtn{background:var(--primary);color:#fff}
+        #submitBtn{background:var(--accent);color:#fff}
+        #score-panel{display:none;padding:14px;border-radius:8px;margin-top:14px;background:linear-gradient(180deg,#fff,#fbfffb);box-shadow:0 6px 18px rgba(6,30,12,0.04)}
+        #score{font-size:20px;font-weight:700;color:#0b3d27;margin:0}
+        #review{margin-top:12px}
+        .review-item{padding:10px;border-radius:8px;border:1px solid #eef2f4;margin-bottom:8px;background:#fff}
+        .correct{color:var(--accent);font-weight:700}
+        .wrong{color:var(--danger);font-weight:700}
+        .meta{font-size:13px;color:var(--muted);margin-top:6px}
+        footer{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+        @media (max-width:520px){#quiz-root{padding:14px}}
+    </style>
+</head>
+<body>
+    <main id="quiz-root" role="main" aria-labelledby="quiz-title">
+        <header>
+            <h1 id="quiz-title">5-Question MCQ Quiz</h1>
+            <div id="progress" aria-live="polite">Question <span id="currentIdx">1</span> / <span id="totalCount">5</span></div>
+        </header>
+
+        <section id="question-card" aria-labelledby="q-text" role="region">
+            <p id="q-text"></p>
+
+            <form id="choicesForm" aria-describedby="question-instructions">
+                <div id="choices" class="choices" role="list"></div>
+            </form>
+
+            <div class="controls">
+                <button id="prevBtn" class="btn" type="button">Previous</button>
+                <div style="display:flex;gap:8px">
+                    <button id="nextBtn" class="btn" type="button">Next</button>
+                    <button id="submitBtn" class="btn" type="button">Submit</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="score-panel" aria-live="polite">
+            <p id="score"></p>
+            <div id="review"></div>
+        </section>
+
+        <footer>Answers saved locally. No page reload.</footer>
+    </main>
+
+    <script>
+        // Quiz data: 5 questions
+        const questions = [
+            { id: 'q1', question: 'Which HTML tag is used for the largest heading?', choices: ['<h1>', '<head>', '<header>', '<heading>'], correct: 0 },
+            { id: 'q2', question: 'Which CSS property controls the text color?', choices: ['font-color', 'color', 'text-color', 'fg-color'], correct: 1 },
+            { id: 'q3', question: 'What keyword declares a constant in modern JavaScript?', choices: ['var', 'const', 'let', 'define'], correct: 1 },
+            { id: 'q4', question: 'Which array method returns a new array with results of calling a function on every element?', choices: ['forEach', 'reduce', 'map', 'filter'], correct: 2 },
+            { id: 'q5', question: 'Which HTTP status code means "Not Found"?', choices: ['200', '301', '403', '404'], correct: 3 }
+        ];
+
+        // State
+        let currentIndex = 0;
+        const total = questions.length;
+        const userAnswers = Array(total).fill(null);
+
+        // Elements
+        const qText = document.getElementById('q-text');
+        const choicesEl = document.getElementById('choices');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const currentIdx = document.getElementById('currentIdx');
+        const totalCount = document.getElementById('totalCount');
+        const scorePanel = document.getElementById('score-panel');
+        const scoreEl = document.getElementById('score');
+        const reviewEl = document.getElementById('review');
+
+        totalCount.textContent = total;
+
+        // Render question
+        const renderQuestion = () => {
+            const q = questions[currentIndex];
+            qText.textContent = q.question;
+            choicesEl.innerHTML = '';
+            q.choices.forEach((choiceText, i) => {
+                const id = `${q.id}-choice-${i}`;
+                const wrapper = document.createElement('label');
+                wrapper.className = 'choice';
+                wrapper.setAttribute('role','listitem');
+                wrapper.htmlFor = id;
+                wrapper.innerHTML = `
+                    <input type="radio" name="choice" id="${id}" value="${i}" aria-checked="${userAnswers[currentIndex]===i}" />
+                    <span>${choiceText}</span>
+                `;
+                // mark selected state
+                if (userAnswers[currentIndex] === i) wrapper.classList.add('selected');
+                // click to select
+                wrapper.addEventListener('click', (e) => {
+                    const input = wrapper.querySelector('input');
+                    input.checked = true;
+                    selectChoice(parseInt(input.value, 10));
+                });
+                choicesEl.appendChild(wrapper);
+            });
+
+            // update controls visibility and progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === total - 1;
+            submitBtn.style.display = currentIndex === total - 1 ? 'inline-block' : 'none';
+            nextBtn.style.display = currentIndex === total - 1 ? 'none' : 'inline-block';
+            currentIdx.textContent = currentIndex + 1;
+        };
+
+        // Save selection
+        const selectChoice = (choiceIndex) => {
+            userAnswers[currentIndex] = choiceIndex;
+            // update selected class
+            Array.from(choicesEl.children).forEach((label, idx) => {
+                label.classList.toggle('selected', idx === choiceIndex);
+            });
+        };
+
+        // Navigation handlers
+        const goNext = () => {
+            // if no answer, just advance (allowed) — answers saved
+            if (currentIndex < total - 1) {
+                currentIndex += 1;
+                renderQuestion();
+            }
+        };
+
+        const goPrev = () => {
+            if (currentIndex > 0) {
+                currentIndex -= 1;
+                renderQuestion();
+            }
+        };
+
+        // Show results and review
+        const showResults = () => {
+            let score = 0;
+            reviewEl.innerHTML = '';
+            questions.forEach((q, idx) => {
+                const user = userAnswers[idx];
+                const correct = q.correct;
+                const container = document.createElement('div');
+                container.className = 'review-item';
+                const qTitle = document.createElement('div');
+                qTitle.innerHTML = `<strong>${idx + 1}. ${q.question}</strong>`;
+                const yourAns = document.createElement('div');
+                if (user === null) {
+                    yourAns.innerHTML = `<span class="wrong">No answer selected</span>`;
+                } else if (user === correct) {
+                    yourAns.innerHTML = `<span class="correct">Your answer: ${q.choices[user]} — Correct</span>`;
+                    score += 1;
+                } else {
+                    yourAns.innerHTML = `<span class="wrong">Your answer: ${q.choices[user]} — Incorrect</span>`;
+                }
+                const correctAns = document.createElement('div');
+                correctAns.className = 'meta';
+                correctAns.textContent = `Correct answer: ${q.choices[correct]}`;
+                container.appendChild(qTitle);
+                container.appendChild(yourAns);
+                container.appendChild(correctAns);
+                reviewEl.appendChild(container);
+            });
+
+            const pct = Math.round((score / total) * 100);
+            scoreEl.textContent = `Score: ${score} / ${total} (${pct}%)`;
+            scorePanel.style.display = 'block';
+            // scroll to results
+            scorePanel.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Event wiring
+        prevBtn.addEventListener('click', () => goPrev());
+        nextBtn.addEventListener('click', () => goNext());
+        submitBtn.addEventListener('click', () => showResults());
+
+        // Keyboard: space/enter on focused choice will select
+        choicesEl.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+                const focused = document.activeElement;
+                if (focused && focused.tagName.toLowerCase() === 'label') {
+                    focused.click();
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Initialize render
+        renderQuestion();
+    </script>
+</body>
+</html>
