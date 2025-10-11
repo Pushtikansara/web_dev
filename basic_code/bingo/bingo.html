@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Code Challenge - C Programming Round</title>
+    <style>
+        /* --- PROFESSIONAL THEME VARIABLES --- */
+        :root {
+            --color-primary: #1E57A6; /* Professional Blue */
+            --color-secondary: #0A2342; /* Deep Navy */
+            --color-background: #F8F8F8; /* Light Neutral Background */
+            --color-card-bg: #FFFFFF; /* White Card Background */
+            --color-text: #333333;
+            --color-accent: #B8860B; /* Bronze/Gold Accent */
+            --color-success: #11998e; /* Subtle Green for Success */
+            --color-border: #DCDCDC;
+            --font-family: 'Roboto', Arial, sans-serif;
+            --font-mono: 'Fira Code', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--color-background);
+            min-height: 100vh;
+            padding: 30px;
+            color: var(--color-text);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER STYLES --- */
+        .header {
+            text-align: center;
+            color: var(--color-secondary);
+            margin-bottom: 40px;
+            background: var(--color-card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--color-primary);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            color: var(--color-primary);
+        }
+
+        /* --- LAYOUT AND PANEL STYLES --- */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .question-panel, .bingo-panel, .legend {
+            background: var(--color-card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border);
+        }
+
+        .question-panel {
+            position: sticky;
+            top: 30px;
+            height: fit-content;
+        }
+
+        .panel-title {
+            text-align: center;
+            color: var(--color-primary);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        /* --- LEGEND STYLES --- */
+        .legend h3 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        .legend p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: var(--color-text);
+        }
+        .legend strong {
+            color: var(--color-secondary);
+        }
+
+        /* --- STATS BAR STYLES --- */
+        .stats-bar {
+            background: #F4F7FB;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 25px;
+            border: 1px solid var(--color-border);
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: var(--color-text);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        /* --- BINGO GRID STYLES --- */
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .bingo-cell {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-collapse: collapse;
+            transition: background 0.2s ease, transform 0.2s ease;
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Highlight on hover */
+        .bingo-cell:hover {
+            background: #F0F5F9;
+            transform: scale(1.01);
+            z-index: 10;
+        }
+
+        /* Correct/Completed cell style */
+        .bingo-cell.correct {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-secondary);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .bingo-cell.correct:hover {
+            background: #154282;
+            transform: scale(1);
+        }
+
+        .cell-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .cell-number {
+            background: var(--color-secondary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .bingo-cell.correct .cell-number {
+            background: var(--color-accent);
+            color: var(--color-secondary);
+        }
+
+        .cell-status {
+            font-size: 0.8em;
+            color: #999;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bingo-cell.correct .cell-status {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .checkmark {
+            font-size: 1.5em;
+            animation: scaleIn 0.3s ease;
+            font-weight: 700 !important;
+        }
+
+
+        /* --- CURRENT QUESTION STYLES --- */
+        .question-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #F0F5F9;
+            border-radius: 6px;
+            font-size: 1em;
+            color: var(--color-secondary);
+            font-weight: 600;
+            border-left: 5px solid var(--color-primary);
+        }
+
+        .current-question-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .current-question-card.correct {
+            background: var(--color-success);
+            color: white;
+            border-color: var(--color-success);
+        }
+
+        .current-question-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .current-question-card.correct .current-question-header {
+            border-bottom-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .current-question-title {
+            font-weight: bold;
+            color: var(--color-primary);
+            font-size: 1.3em;
+        }
+
+        .current-question-card.correct .current-question-title {
+            color: white;
+        }
+
+        .current-code-snippet {
+            background: #FAFAFA;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: var(--font-mono);
+            font-size: 1em;
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-accent);
+            white-space: pre-wrap;
+            line-height: 1.5;
+            color: var(--color-text);
+        }
+
+        .current-question-card.correct .current-code-snippet {
+            background: rgba(255,255,255,0.9);
+            border-left-color: white;
+            border-color: white;
+            color: var(--color-secondary);
+        }
+
+        .current-answer-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .current-question-card.correct .current-answer-section {
+            border-top-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .current-answer-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .current-answer-input {
+            flex: 1;
+            max-width: 350px;
+            min-width: 200px;
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: var(--font-mono);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .current-answer-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(30, 87, 166, 0.1);
+        }
+
+        .current-question-card.correct .current-answer-input {
+            background: rgba(255,255,255,0.95);
+            border-color: white;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        /* --- BUTTON STYLES --- */
+        .current-submit-btn, .skip-btn, .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            min-width: 100px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .current-submit-btn {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .current-submit-btn:hover {
+            background: #154282;
+            transform: translateY(-1px);
+        }
+
+        .skip-btn {
+            background: #E0E0E0;
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .skip-btn:hover {
+            background: #CCCCCC;
+        }
+
+        .current-question-card.correct .current-submit-btn {
+            background: white;
+            color: var(--color-success);
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--color-card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1em;
+            border-radius: 4px;
+            margin: 0 15px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #154282;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #0d7f76;
+            transform: translateY(-1px);
+        }
+
+        /* --- ALERT/OVERLAY STYLES --- */
+        .bingo-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: var(--color-card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .bingo-alert.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .bingo-alert h2 {
+            color: var(--color-accent);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .question-panel {
+                position: static;
+            }
+            .bingo-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bingo-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .stat-value {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Professional Code Challenge</h1>
+            <p>Round 2: C Programming Evaluation</p>
+        </div>
+
+        <div class="legend">
+            <h3>📖 Challenge Protocol</h3>
+            <p style="color: var(--color-text);">
+                🎯 <strong>Objective:</strong> Correctly predict C code outputs to mark tiles and complete BINGO sequences (Row, Column, or Diagonal).<br><br>
+                📝 <strong>Guidelines:</strong><br>
+                • Review the provided C snippet and determine the precise output.<br>
+                • Enter your prediction in the input field (case and spacing sensitive).<br>
+                • Correct answers will be mapped to a randomized tile on the Bingo Grid, marked in **Professional Blue**.<br>
+                • Achieving **BINGO** (one complete line) is required to unlock the final submission protocol.<br>
+                • Use the Skip function only when necessary; skipped questions are permanently unavailable.
+            </p>
+        </div>
+
+        <div class="main-content">
+            <div class="question-panel">
+                <div class="panel-title">📝 Current Task</div>
+                <div class="question-progress">
+                    <span id="question-counter">Question 1 of 25</span>
+                    <span id="question-status-indicator"></span>
+                </div>
+                <div class="current-question-section" id="current-question-section">
+                    <div class="current-question-card" id="current-question-card">
+                        </div>
+                </div>
+            </div>
+
+            <div class="bingo-panel">
+                <div class="panel-title">🎯 Performance Grid</div>
+                <div class="stats-bar">
+                    <div class="stat">
+                        <div class="stat-label">✅ Correct Submissions</div>
+                        <div class="stat-value" id="correct-count">0/25</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">🎯 Total Score</div>
+                        <div class="stat-value" id="score">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">🟩 Completed Lines</div>
+                        <div class="stat-value" id="bingo-lines">0</div>
+                    </div>
+                </div>
+                <div class="bingo-grid" id="bingo-grid"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="resetGame()">🔄 Reset Evaluation</button>
+            <button class="btn btn-success" onclick="checkBingo()">✅ Review Bingo Status</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="bingo-alert" id="bingo-alert">
+        <h2>🎖️ Milestone Achieved!</h2>
+        <p style="font-size: 1.5em; margin-bottom: 20px;">A BINGO line has been completed!</p>
+        <p id="bingo-details" style="font-size: 1.2em; color: #666;"></p>
+        <div style="margin-top: 20px;">
+            <button class="btn btn-success" onclick="redirectToGoogleForm()" id="submit-btn" style="margin-right: 15px; display: none;">📋 Initiate Final Submission</button>
+            <button class="btn btn-primary" onclick="closeBingoAlert()">Continue Evaluation</button>
+        </div>
+    </div>
+
+    <script>
+        const bingoQuestions = [
+            { id: 1, code: `int x = 5;\nprintf("%d", x);`, answer: "5", difficulty: "easy" },
+            { id: 2, code: `for(int i=0; i<3; i++)\n  printf("%d", i);`, answer: "012", difficulty: "easy" },
+            { id: 3, code: `int a[] = {1,2,3,4};\nprintf("%d", a[2]);`, answer: "3", difficulty: "easy" },
+            { id: 4, code: `int x = 10, y = 5;\nprintf("%d", x + y);`, answer: "15", difficulty: "easy" },
+            { id: 5, code: `char c = 'A';\nprintf("%c", c);`, answer: "A", difficulty: "easy" },
+            
+            { id: 6, code: `int x = 5;\nprintf("%d", x * 2);`, answer: "10", difficulty: "easy" },
+            { id: 7, code: `int x = 7;\nif(x > 5)\n  printf("Yes");\nelse\n  printf("No");`, answer: "Yes", difficulty: "easy" },
+            { id: 8, code: `for(int i=1; i<=3; i++)\n  printf("%d ", i);`, answer: "1 2 3 ", difficulty: "easy" },
+            { id: 9, code: `int a[] = {5,10,15};\nprintf("%d", a[0]+a[1]);`, answer: "15", difficulty: "moderate" },
+            { id: 10, code: `int x = 2;\nswitch(x) {\n  case 2:\n    printf("Two");\n}`, answer: "Two", difficulty: "easy" },
+            
+            { id: 11, code: `int x = 5;\nx += 3;\nprintf("%d", x);`, answer: "8", difficulty: "moderate" },
+            { id: 12, code: `char s[] = "Hi";\nprintf("%d", sizeof(s));`, answer: "3", difficulty: "moderate" },
+            { id: 13, code: `int i=0;\nwhile(i<2) {\n  printf("%d", i);\n  i++;\n}`, answer: "01", difficulty: "moderate" },
+            { id: 14, code: `int a[]={1,2,3,4,5};\nprintf("%d", a[4]);`, answer: "5", difficulty: "easy" },
+            { id: 15, code: `int x=10, y=3;\nprintf("%d", x % y);`, answer: "1", difficulty: "moderate" },
+            
+            { id: 16, code: `for(int i=0; i<2; i++)\n  for(int j=0; j<2; j++)\n    printf("*");`, answer: "****", difficulty: "moderate" },
+            { id: 17, code: `int x = 5;\nprintf("%d", ++x);`, answer: "6", difficulty: "moderate" },
+            { id: 18, code: `int x = 5;\nprintf("%d", x++);`, answer: "5", difficulty: "trick" },
+            { id: 19, code: `char s[] = "CODE";\nprintf("%c", s[0]);`, answer: "C", difficulty: "easy" },
+            { id: 20, code: `int x=1;\nfor(int i=0; i<3; i++)\n  x *= 2;\nprintf("%d", x);`, answer: "8", difficulty: "moderate" },
+            
+            { id: 21, code: `int a[]={2,4,6};\nprintf("%d",a[1]*2);`, answer: "8", difficulty: "moderate" },
+            { id: 22, code: `int x=10, y=0;\nif(x && y)\n  printf("T");\nelse\n  printf("F");`, answer: "F", difficulty: "moderate" },
+            { id: 23, code: `int x=5;\nprintf("%d",x>3?1:0);`, answer: "1", difficulty: "trick" },
+            { id: 24, code: `char c='B';\nprintf("%d", c);`, answer: "66", difficulty: "trick" },
+            { id: 25, code: `int x=7, y=2;\nprintf("%d", x/y);`, answer: "3", difficulty: "moderate" }
+        ];
+
+        let gameState = {
+            correctAnswers: 0,
+            score: 0,
+            bingoLines: 0,
+            completedCells: new Array(25).fill(false),
+            questionToBlockMapping: {}, 
+            blockToQuestionMapping: {},
+            currentQuestionIndex: 0,
+            questionsOrder: [],
+            questionStatuses: [],
+            questionAnswers: {},
+            answeredQuestions: new Set()
+        };
+
+        const GOOGLE_FORM_URL = "https://forms.google.com/YOUR_FORM_ID_HERE";
+
+        function initGame() {
+            generateRandomMapping();
+            shuffleQuestionsOrder();
+            renderBingoGrid();
+            showCurrentQuestion();
+            updateStats();
+        }
+
+        function shuffleQuestionsOrder() {
+            gameState.questionsOrder = [...bingoQuestions.slice(0, 25)].sort(() => Math.random() - 0.5);
+            gameState.questionStatuses = new Array(gameState.questionsOrder.length).fill('unanswered');
+        }
+
+        function generateRandomMapping() {
+            const blockPositions = Array.from({length: 25}, (_, i) => i);
+            const shuffledPositions = blockPositions.sort(() => Math.random() - 0.5);
+            
+            bingoQuestions.slice(0, 25).forEach((question, index) => {
+                const blockPosition = shuffledPositions[index];
+                gameState.questionToBlockMapping[question.id] = blockPosition;
+                gameState.blockToQuestionMapping[blockPosition] = question;
+            });
+        }
+
+        function showCurrentQuestion() {
+            if (gameState.currentQuestionIndex >= gameState.questionsOrder.length) {
+                showCompletionMessage();
+                return;
+            }
+
+            const question = gameState.questionsOrder[gameState.currentQuestionIndex];
+            const questionCard = document.getElementById('current-question-card');
+            const questionCounter = document.getElementById('question-counter');
+            const statusIndicator = document.getElementById('question-status-indicator');
+
+            questionCard.classList.remove('correct');
+            questionCard.className = 'current-question-card';
+
+            questionCounter.textContent = `Question ${gameState.currentQuestionIndex + 1} of ${gameState.questionsOrder.length}`;
+
+            const status = gameState.questionStatuses[gameState.currentQuestionIndex];
+            if (status === 'correct') {
+                statusIndicator.innerHTML = '<span style="color: var(--color-success); font-weight: bold;">✅ Completed</span>';
+            } else if (status === 'skipped') {
+                statusIndicator.innerHTML = '<span style="color: var(--color-accent); font-weight: bold;">⏭️ Skipped</span>';
+            } else {
+                statusIndicator.innerHTML = '<span style="color: #666;">❓ Pending Task</span>';
+            }
+
+            questionCard.innerHTML = `
+                <div class="current-question-header">
+                    <div class="current-question-title">Evaluation ID: ${question.id}</div>
+                </div>
+                <div class="current-code-snippet">${escapeHtml(question.code)}</div>
+                <div class="current-answer-section">
+                    <div class="current-answer-controls">
+                        <input 
+                            type="text" 
+                            class="current-answer-input" 
+                            id="current-answer-input"
+                            placeholder="Enter expected output..."
+                            onkeypress="handleCurrentQuestionKeyPress(event)"
+                        >
+                        <button class="current-submit-btn" onclick="submitCurrentAnswer()">
+                            Submit
+                        </button>
+                        <button class="skip-btn" onclick="skipCurrentQuestion()">
+                            Skip
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                document.getElementById('current-answer-input').focus();
+                // Pre-fill if already answered/skipped (though logic primarily advances)
+                if (gameState.questionAnswers[question.id]) {
+                    document.getElementById('current-answer-input').value = gameState.questionAnswers[question.id];
+                    if (status === 'correct' || status === 'skipped') {
+                        document.getElementById('current-answer-input').disabled = true;
+                        // For correct, re-show the success message format
+                        if(status === 'correct') {
+                            displayCorrectMessage(question);
+                        }
+                    }
+                }
+            }, 100);
+        }
+
+        function handleCurrentQuestionKeyPress(event) {
+            if (event.key === 'Enter') {
+                submitCurrentAnswer();
+            }
+        }
+
+        function displayCorrectMessage(question) {
+            const questionCard = document.getElementById('current-question-card');
+            questionCard.classList.add('correct');
+            const controls = questionCard.querySelector('.current-answer-controls');
+            controls.innerHTML = `
+                <div style="text-align: center; color: white; margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.1); border-radius: 8px; width: 100%;">
+                    <strong style="font-size: 1.2em;">✅ Correctly Decoded!</strong><br>
+                    <span style="font-size: 1em; margin-top: 5px; display: block;">Tile ${gameState.questionToBlockMapping[question.id] + 1} Marked.</span>
+                    <span style="font-size: 0.9em; margin-top: 10px; display: block; opacity: 0.9;">Proceeding in 2 seconds...</span>
+                </div>
+            `;
+            const statusIndicator = document.getElementById('question-status-indicator');
+            statusIndicator.innerHTML = '<span style="color: var(--color-success); font-weight: bold;">✅ Correct</span>';
+        }
+
+        function submitCurrentAnswer() {
+            const input = document.getElementById('current-answer-input');
+            const userAnswer = input.value.trim();
+            const question = gameState.questionsOrder[gameState.currentQuestionIndex];
+
+            if (userAnswer === '') {
+                alert('Please provide an output for submission.');
+                return;
+            }
+
+            gameState.questionAnswers[question.id] = userAnswer;
+
+            if (userAnswer === question.answer) {
+                if (gameState.questionStatuses[gameState.currentQuestionIndex] !== 'correct') {
+                    const linkedBlockIndex = gameState.questionToBlockMapping[question.id];
+                    gameState.completedCells[linkedBlockIndex] = true;
+                    gameState.correctAnswers++;
+                    gameState.answeredQuestions.add(question.id);
+                    gameState.questionStatuses[gameState.currentQuestionIndex] = 'correct';
+                    
+                    const difficulty = question.difficulty;
+                    let points = 0;
+                    if (difficulty === 'easy') points = 1;
+                    else if (difficulty === 'moderate') points = 2;
+                    else if (difficulty === 'trick') points = 3;
+                    gameState.score += points;
+
+                    const blockCell = document.querySelector(`[data-block="${linkedBlockIndex}"]`);
+                    blockCell.classList.add('correct');
+                    
+                    const cellFront = blockCell.querySelector('.cell-front');
+                    cellFront.innerHTML = `
+                        <div class="cell-number">${linkedBlockIndex + 1}</div>
+                        <div class="cell-status checkmark">✓</div>
+                    `;
+
+                    updateStats();
+                    setTimeout(checkForBingo, 300);
+                }
+
+                input.disabled = true;
+                displayCorrectMessage(question);
+
+                setTimeout(() => {
+                    autoNextQuestion();
+                }, 2000);
+
+            } else {
+                input.style.borderColor = '#CC0000'; // Error red
+                input.style.animation = 'shake 0.5s';
+                
+                setTimeout(() => {
+                    input.style.borderColor = var(--color-border);
+                    input.style.animation = '';
+                }, 500);
+                
+                alert('❌ Incorrect Output. Please review the C code and try again.');
+            }
+        }
+
+        function skipCurrentQuestion() {
+            if (gameState.questionStatuses[gameState.currentQuestionIndex] === 'correct') {
+                return; 
+            }
+
+            if (confirm('Warning: Skipping this question means the associated grid tile will remain blank and the question cannot be revisited. Proceed?')) {
+                gameState.questionStatuses[gameState.currentQuestionIndex] = 'skipped';
+                gameState.answeredQuestions.add(gameState.questionsOrder[gameState.currentQuestionIndex].id);
+                // Mark with a distinctive style for skipped items if desired, but for professional, just skip and advance.
+                autoNextQuestion();
+            }
+        }
+
+        function autoNextQuestion() {
+            if (gameState.currentQuestionIndex < gameState.questionsOrder.length - 1) {
+                gameState.currentQuestionIndex++;
+                showCurrentQuestion();
+            } else {
+                showCompletionMessage();
+            }
+        }
+
+        function showCompletionMessage() {
+            const questionCard = document.getElementById('current-question-card');
+            const questionCounter = document.getElementById('question-counter');
+
+            questionCounter.textContent = 'Evaluation Complete 🎊';
+            questionCard.innerHTML = `
+                <div style="text-align: center; padding: 25px;">
+                    <h2 style="color: var(--color-primary); margin-bottom: 20px; font-size: 2em;">✅ Evaluation Concluded</h2>
+                    <p style="font-size: 1.2em; margin-bottom: 20px; color: #555;">
+                        All ${gameState.questionsOrder.length} tasks have been processed.
+                    </p>
+                    <div style="background: #F0F5F9; padding: 20px; border-radius: 8px; border: 1px solid var(--color-border); margin: 20px 0;">
+                        <div style="color: var(--color-secondary); font-size: 1.1em; line-height: 1.8; text-align: left; display: inline-block;">
+                            <span style="font-weight: 600;">Summary of Results:</span><br>
+                            ✅ <strong>Correctly Solved:</strong> ${gameState.correctAnswers}/${gameState.questionsOrder.length}<br>
+                            🎯 <strong>Total Attained Score:</strong> ${gameState.score} points<br>
+                            🟩 <strong>Bingo Sequences:</strong> ${gameState.bingoLines}
+                        </div>
+                    </div>
+                    ${gameState.bingoLines > 0 ? 
+                        '<button class="btn btn-success" onclick="redirectToGoogleForm()" style="margin-top: 20px; font-size: 1.1em;">📋 Initiate Final Submission</button>' : 
+                        '<p style="color: var(--color-accent); margin-top: 20px; font-size: 1.1em; font-weight: bold;">Note: A Bingo sequence must be completed to unlock the submission protocol. Continue playing to achieve this goal. 🎯</p>'
+                    }
+                </div>
+            `;
+        }
+
+        function renderBingoGrid() {
+            const grid = document.getElementById('bingo-grid');
+            grid.innerHTML = '';
+
+            for (let blockIndex = 0; blockIndex < 25; blockIndex++) {
+                const cell = document.createElement('div');
+                cell.className = 'bingo-cell';
+                cell.setAttribute('data-block', blockIndex);
+                
+                // Determine if cell is already completed (for reset/re-render)
+                const isCorrect = gameState.completedCells[blockIndex];
+                if (isCorrect) {
+                    cell.classList.add('correct');
+                    cell.innerHTML = `
+                        <div class="cell-front">
+                            <div class="cell-number">${blockIndex + 1}</div>
+                            <div class="cell-status checkmark">✓</div>
+                        </div>
+                    `;
+                } else {
+                    cell.innerHTML = `
+                        <div class="cell-front">
+                            <div class="cell-number">${blockIndex + 1}</div>
+                            <div class="cell-status">Pending</div>
+                        </div>
+                    `;
+                }
+                grid.appendChild(cell);
+            }
+        }
+
+        function checkForBingo() {
+            const previousLines = gameState.bingoLines;
+            let lines = 0;
+
+            const cells = gameState.completedCells;
+
+            // Check Rows
+            for (let i = 0; i < 5; i++) {
+                if (cells[i * 5] && cells[i * 5 + 1] && cells[i * 5 + 2] && cells[i * 5 + 3] && cells[i * 5 + 4]) {
+                    lines++;
+                }
+            }
+
+            // Check Columns
+            for (let j = 0; j < 5; j++) {
+                if (cells[j] && cells[j + 5] && cells[j + 10] && cells[j + 15] && cells[j + 20]) {
+                    lines++;
+                }
+            }
+
+            // Check Diagonals
+            if (cells[0] && cells[6] && cells[12] && cells[18] && cells[24]) lines++; // Top-left to bottom-right
+            if (cells[4] && cells[8] && cells[12] && cells[16] && cells[20]) lines++; // Top-right to bottom-left
+
+            gameState.bingoLines = lines;
+
+            if (lines > previousLines) {
+                gameState.score += 5 * (lines - previousLines);
+                showBingoAlert();
+            }
+
+            updateStats();
+        }
+
+        function showBingoAlert() {
+            const alert = document.getElementById('bingo-alert');
+            const overlay = document.getElementById('overlay');
+            const details = document.getElementById('bingo-details');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (gameState.bingoLines > 0) {
+                details.innerHTML = `
+                    You have ${gameState.bingoLines} BINGO sequence(s) completed, awarding +5 points per sequence.<br>
+                    <strong>Final Submission is now available.</strong>
+                `;
+                submitBtn.style.display = 'inline-block';
+            } else {
+                details.textContent = `You have ${gameState.bingoLines} BINGO line(s) completed.`;
+                submitBtn.style.display = 'none';
+            }
+
+            overlay.classList.add('show');
+            alert.classList.add('show');
+        }
+
+        function redirectToGoogleForm() {
+            const urlWithData = `${GOOGLE_FORM_URL}?usp=pp_url&entry.score=${gameState.score}&entry.correct=${gameState.correctAnswers}&entry.lines=${gameState.bingoLines}`;
+            
+            alert(`Final Submission Protocol Initiated:\n\nStats:\n✅ Correct: ${gameState.correctAnswers}/25\n🎯 Score: ${gameState.score}\n🟩 Lines: ${gameState.bingoLines}\n\nOpening submission form...`);
+            
+            window.open(GOOGLE_FORM_URL, '_blank');
+        }
+
+        function closeBingoAlert() {
+            const alert = document.getElementById('bingo-alert');
+            const overlay = document.getElementById('overlay');
+
+            overlay.classList.remove('show');
+            alert.classList.remove('show');
+        }
+
+        function checkBingo() {
+            if (gameState.bingoLines > 0) {
+                showBingoAlert();
+            } else {
+                alert('No BINGO sequence is currently complete. Focus on completing a row, column, or diagonal on the Performance Grid.');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('correct-count').textContent = `${gameState.correctAnswers}/25`;
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('bingo-lines').textContent = gameState.bingoLines;
+        }
+
+        function resetGame() {
+            if (confirm('Confirmation: Are you sure you wish to reset the evaluation? All current progress and scores will be permanently cleared.')) {
+                gameState = {
+                    correctAnswers: 0,
+                    score: 0,
+                    bingoLines: 0,
+                    completedCells: new Array(25).fill(false),
+                    questionToBlockMapping: {},
+                    blockToQuestionMapping: {},
+                    currentQuestionIndex: 0,
+                    questionsOrder: [],
+                    answeredQuestions: new Set(),
+                    questionStatuses: [],
+                    questionAnswers: {}
+                };
+                initGame();
+                updateStats();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>
