@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Range Iterable Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+    }
+    h1 {
+      color: #333;
+    }
+    h2 {
+      color: #555;
+    }
+    .output {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Custom Range Iterable Demo</h1>
+
+  <h2>1. Iterating with `for...of`</h2>
+  <div id="for-of-output" class="output"></div>
+
+  <h2>2. Spreading into an array</h2>
+  <div id="spread-output" class="output"></div>
+
+  <h2>3. Negative step</h2>
+  <div id="negative-step-output" class="output"></div>
+
+  <script src="iterable.js"></script>
+  <script>
+    const forOfOutput = document.getElementById('for-of-output');
+    const range1 = new Range(1, 10, 2);
+    let forOfResult = '';
+    for (const num of range1) {
+      forOfResult += num + ' ';
+    }
+    forOfOutput.textContent = forOfResult;
+
+    const spreadOutput = document.getElementById('spread-output');
+    const range2 = new Range(5, 20, 3);
+    const spreadResult = [...range2];
+    spreadOutput.textContent = spreadResult.join(', ');
+
+    const negativeStepOutput = document.getElementById('negative-step-output');
+    const range3 = new Range(10, 0, -1);
+    const negativeStepResult = [...range3];
+    negativeStepOutput.textContent = negativeStepResult.join(', ');
+  </script>
+</body>
+</html>
