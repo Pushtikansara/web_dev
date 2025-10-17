@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="ul"></ul>
+`
+    <script>
+        const product = [{
+            id:101,
+            name: 'Mobile',
+            quantity: 100,
+            price: 10000
+        },
+        {
+            id:102,
+            name: 'Washing-Machine',
+            quantity: 900,
+            price: 10000
+        }
+    ]
+
+    //traverse array obj
+    product.forEach(e => {
+        const li = document.createElement("li");
+        const ele = document.getElementById('ul');
+        li.textContent = `${e.name} has quantity ${e.quantity}`;
+        ele.appendChild(li);
+
+    })
+    </script>
+</body>
+</html>

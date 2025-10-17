@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Manipulation Example</title>
+  <style>
+    #myHeading {
+      color: darkblue;
+      font-size: 24px;
+    }
+    #changeBtn {
+      padding: 10px 20px;
+      background-color: coral;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- <h2 id="myHeading">Welcome to the DOM World!</h2>
+  <button id="changeBtn">Change Heading</button> -->
+  <p id="title">hii</p>
+
+   <script>
+    // // Get references to DOM elements
+    // const heading = document.getElementById("myHeading");
+    // const button = document.getElementById("changeBtn");
+
+    // // Add event listener to button
+    // button.addEventListener("click", function() {
+    //   heading.textContent = " DOM Manipulated Successfully!";
+    //   heading.style.color = "green";
+    //   heading.style.fontSize = "30px";
+    // });
+    const heading = document.getElementById("title");
+heading.textContent = "Hello !";
+heading.style.color = "pink";
+heading.style.fontSize = "36px";
+heading.classList.add("glow");
+
+  </script>  
+  
+
+</body>
+</html>
