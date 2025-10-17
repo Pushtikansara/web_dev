@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+</head>
+<body>
+
+  <h3 id="Btn">Today date is :</h3>
+
+  <button type="button" id="showDateBtn">Click ME</button>
+
+  <form name="myform" onsubmit="checkname(); return false;">
+    <input type="text" name="name" placeholder="Enter your name" />
+    <button type="submit">Submit</button>
+   
+  </form>
+
+  <script>
+    const h3 = document.getElementById('Btn');
+    const dateBtn = document.getElementById('showDateBtn');
+
+    dateBtn.addEventListener('click', function () {
+      h3.textContent = `Today's Date Is ${new Date().toLocaleString()}`;
+
+      const para = document.createElement('p');
+      para.setAttribute('id', 'p1');
+      para.textContent = "dynamic";
+      document.body.appendChild(para);
+    });
+
+    function checkname() {
+      const nameInput = document.myform.name;
+      const heading = document.createElement('h1');
+      heading.setAttribute('id', 'heading');
+      heading.textContent = nameInput.value;
+      nameInput.parentNode.appendChild(heading);
+    }
+     
+  </script>
+</body>
+</html>

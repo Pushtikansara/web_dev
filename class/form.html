@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration</title>
+
+    <link rel="stylesheet" href="form.css">
+ 
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo"></div>
+    <div class="title">
+      <h1>REGISTRATION FORM</h1>
+    </div>
+  </div>
+
+  <div class="register-container">
+    <div class="register-box">
+      <h2>Student Registration</h2>
+      <form action="#" method="post" onsubmit="validateForm(event)">
+        <input type="text" id="fullname" name="name" placeholder="Enter full Name" required>
+        <input type="text" id="studentid" name="student_id" placeholder="Enter Student ID" required>
+        <input type="email" id="email" name="email" placeholder="Email Address" required>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <input type="password" id="confirmpassword" name="confirm" placeholder="Confirm Password" required>
+        <input type="text" id="phone" name="phone" placeholder="Phone No." required>
+        <button type="submit">Register</button>
+        <div class="link">
+          <p>Already have an account? <a href="#">Login here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="output" class="output-box"></div>
+
+  <script>
+  function validateForm(event) {
+    // Prevent default form submission
+    event.preventDefault();
+    localStorage.setItem("fullname",document.getElementById("fullname").value);
+    localStorage.setItem("username",document.getElementById("username").value);
+    window.location.href = "display.html";
+
+//     // Get form values
+//     let fullname = document.getElementById("fullname").value;
+//     let studentid = document.getElementById("studentid").value;
+//     let email = document.getElementById("email").value;
+//     let username = document.getElementById("username").value;
+//     let password = document.getElementById("password").value;
+//     let confirmpassword = document.getElementById("confirmpassword").value;
+//     let phone = document.getElementById("phone").value;
+
+//     // Optional: Validate password match
+//     if (password !== confirmpassword) {
+//       alert("Passwords do not match!");
+//       return false;
+//     }
+//  // Create output HTML
+//     let outputHTML = `
+//       <h3>Submitted Details</h3>
+//       <p><strong>Full Name:</strong> ${fullname}</p>
+//       <p><strong>Student ID:</strong> ${studentid}</p>
+//       <p><strong>Email:</strong> ${email}</p>
+//       <p><strong>Username:</strong> ${username}</p>
+//       <p><strong>Phone No.:</strong> ${phone}</p>
+//     `;
+
+   
+//     document.getElementById("output").innerHTML = outputHTML;
+
+
+//     document.querySelector("form").reset();
+
+//     return false; 
+  }
+</script>
+
+</body>
+</html>

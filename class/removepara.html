@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Remove Paragraph</title>
+  <style>
+    p {
+      font-size: 20px;
+      color: darkblue;
+    }
+  </style>
+</head>
+<body>
+
+  <p>Paragraph will be removed from the page.</p>
+  <button onclick="removeParagraph()">Remove Paragraph</button>
+
+  <script>
+    function removeParagraph() {
+      // Select the first paragraph tag
+      const para = document.querySelector("p");
+
+      // Remove it from the DOM
+      if (para) {
+        para.remove();
+      }
+    }
+  </script>
+
+</body>
+</html>

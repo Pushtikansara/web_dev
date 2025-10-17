@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calc — Simple HTML Calculator</title>
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --panel:#0b1220;
+      --accent:#06b6d4; /* teal */
+      --btn:#111827;
+      --btn-press:#0ea5a4;
+      --text:#e6eef6;
+      font-size:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,#071022 0%,#081827 60%);
+      color:var(--text);
+      font-family:Inter,Segoe UI,Roboto,system-ui,Arial;
+      padding:24px;
+    }
+    .calculator{
+      width:360px;
+      max-width:94vw;
+      background:linear-gradient(180deg,var(--panel),#07101a);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
+      padding:18px;
+    }
+    .screen{
+      height:86px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-end;
+      gap:6px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+      border-radius:10px;
+      margin-bottom:14px;
+    }
+    .expression{
+      font-size:14px;
+      color:rgba(230,238,246,0.6);
+      width:100%;
+      text-align:right;
+      word-break:break-all;
+    }
+    .result{
+      font-size:28px;
+      font-weight:600;
+      width:100%;
+      text-align:right;
+    }
+    .keys{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+    button{
+      padding:16px;
+      border-radius:10px;
+      border:0;
+      background:var(--btn);
+      color:var(--text);
+      font-size:18px;
+      box-shadow:0 6px 12px rgba(2,6,23,0.6);
+      cursor:pointer;
+      user-select:none;
+      transition:transform 0.06s ease, background 0.12s ease;
+    }
+    button:active{transform:translateY(2px)}
+    .op{background:linear-gradient(180deg,var(--accent),#008a9a); color:#041013; font-weight:600}
+    .wide{grid-column:span 2}
+    .danger{background:linear-gradient(180deg,#ff6b6b,#ff3b3b); color:white}
+    .secondary{background:rgba(255,255,255,0.03); color:rgba(230,238,246,0.9)}
+    .kbd-hint{font-size:12px; color:rgba(230,238,246,0.5); margin-top:8px; text-align:center}
+
+    @media (max-width:420px){
+      .calculator{width:320px}
+      .result{font-size:24px}
+      button{padding:14px;font-size:16px}
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator" role="application" aria-label="Simple calculator">
+    <div class="screen">
+      <div id="expression" class="expression">&nbsp;</div>
+      <div id="result" class="result">0</div>
+    </div>
+
+    <div class="keys">
+      <button class="secondary" data-action="clear">C</button>
+      <button class="secondary" data-action="back">⌫</button>
+      <button class="secondary" data-action="percent">%</button>
+      <button class="op" data-value="/">÷</button>
+
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button class="op" data-value="*">×</button>
+
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button class="op" data-value="-">−</button>
+
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
+      <button data-value="3">3</button>
+      <button class="op" data-value="+">+</button>
+
+      <button class="wide" data-value="0">0</button>
+      <button data-value=".">.</button>
+      <button class="danger" data-action="equals">=</button>
+    </div>
+
+    <div class="kbd-hint">Tip: You can use your keyboard (digits, + - * / Enter Backspace Esc)</div>
+  </div>
+
+  <script>
+    (function(){
+      const expressionEl = document.getElementById('expression');
+      const resultEl = document.getElementById('result');
+      const keys = document.querySelectorAll('button[data-value], button[data-action]');
+
+      let expr = '';
+      let lastKey = '';
+
+      function updateScreen(){
+        expressionEl.textContent = expr || '\u00A0'; // non-breaking space when empty
+        try{
+          const safe = sanitizeForEval(expr);
+          if(safe.trim() === ''){ resultEl.textContent = '0'; return }
+          const val = eval(safe);
+          if(Number.isFinite(val)){
+            resultEl.textContent = formatNumber(val);
+          } else {
+            resultEl.textContent = 'Err';
+          }
+        } catch(e){
+          resultEl.textContent = '';
+        }
+      }
+
+      function sanitizeForEval(s){
+        // Replace unicode division/multiplication signs with JS operators
+        let t = s.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');
+        // Remove any characters except digits, operators, decimal, parentheses, percent
+        t = t.replace(/[^0-9+\-*/%.()]/g,'');
+        // Handle percentage by converting "x%" into "(x/100)"
+        t = t.replace(/(\d+(?:\.\d+)?)%/g,'($1/100)');
+        return t;
+      }
+
+      function formatNumber(n){
+        // Limit long floating point results and use locale string for readability
+        if(Math.abs(n) < 1e12) {
+          // show up to 10 decimal places but remove trailing zeros
+          return parseFloat(n.toFixed(10)).toString();
+        }
+        return n.toExponential(6);
+      }
+
+      function pushValue(v){
+        // Prevent two operators in a row (except leading - for negative)
+        if(/[+\-*/]/.test(v)){
+          if(expr === '' && v === '-') { expr = '-'; }
+          else if(/[+\-*/]$/.test(expr)){
+            // replace last operator
+            expr = expr.slice(0, -1) + v;
+          } else {
+            expr += v;
+          }
+        } else if(v === '.'){
+          // prevent multiple decimals in the current number chunk
+          const parts = expr.split(/[+\-*/]/);
+          const last = parts[parts.length-1] || '';
+          if(!last.includes('.')) expr += v;
+        } else {
+          expr += v;
+        }
+        lastKey = v;
+        updateScreen();
+      }
+
+      function clearAll(){ expr = ''; updateScreen(); }
+      function backspace(){ expr = expr.slice(0,-1); updateScreen(); }
+
+      function doEquals(){
+        try{
+          const safe = sanitizeForEval(expr);
+          const value = eval(safe);
+          if(Number.isFinite(value)){
+            expr = String(value);
+            updateScreen();
+          } else {
+            resultEl.textContent = 'Error';
+          }
+        } catch(e){ resultEl.textContent = 'Error'; }
+      }
+
+      // Attach button handlers
+      keys.forEach(k=>{
+        k.addEventListener('click', ()=>{
+          const v = k.getAttribute('data-value');
+          const a = k.getAttribute('data-action');
+          if(a){
+            if(a === 'clear') clearAll();
+            else if(a === 'back') backspace();
+            else if(a === 'equals') doEquals();
+            else if(a === 'percent') pushValue('%');
+          } else if(v){
+            pushValue(v);
+          }
+        });
+      });
+
+      // Keyboard support
+      window.addEventListener('keydown', (e)=>{
+        if(e.key >= '0' && e.key <= '9') { pushValue(e.key); e.preventDefault(); }
+        else if(e.key === '.') { pushValue('.'); e.preventDefault(); }
+        else if(e.key === '+'|| e.key === '-' || e.key === '*' || e.key === '/') { pushValue(e.key); e.preventDefault(); }
+        else if(e.key === 'Enter') { doEquals(); e.preventDefault(); }
+        else if(e.key === 'Backspace') { backspace(); e.preventDefault(); }
+        else if(e.key === 'Escape') { clearAll(); e.preventDefault(); }
+        else if(e.key === '%') { pushValue('%'); e.preventDefault(); }
+      });
+
+      // Initialize
+      updateScreen();
+    })();
+  </script>
+</body>
+</html>
