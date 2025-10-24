@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact Us</title>
+  <style>
+    :root{--bg:#f4f7fb;--card:#ffffff;--accent:#28a745;--muted:#6b7280;--shadow:0 8px 30px rgba(2,6,23,0.06);font-family:Arial, Helvetica, sans-serif}
+    html,body{min-height:100%;margin:0;background:var(--bg);display:flex;align-items:flex-start;justify-content:center;padding:40px 20px}
+    .card{
+        background:var(--card);
+        padding:50px;border-radius:12px;box-shadow:var(--shadow);border:1px solid #eef4f7;
+    margin:10px;}
+    h1{margin:0 0 14px 0;font-size:28px;line-height:1.05}
+    .form-group{margin-bottom:18px}
+    label{display:block;margin-bottom:8px;font-weight:700;color:#222;font-size:14px}
+    input[type="text"],input[type="email"],input[type="tel"],textarea{width:100%;padding:12px;border:1px solid #d1d9de;border-radius:8px;font-size:15px;background:#fff;box-sizing:border-box}
+    input[type="text"],input[type="email"],input[type="tel"]{height:46px}
+    textarea{min-height:140px;resize:vertical}
+    button{background:var(--accent);color:#fff;padding:14px 18px;border:0;border-radius:8px;cursor:pointer;font-weight:700;font-size:16px;width:100%;transition:background .12s ease}
+    button:hover{background:#23963b}
+    .footer{margin-top:14px;text-align:left;color:var(--muted);font-size:14px}
+    #id-badge{position:fixed;top:14px;right:14px;background:#0366d6;color:#fff;padding:7px 10px;border-radius:6px;font-weight:700;box-shadow:0 6px 18px rgba(3,30,70,0.12);font-size:13px;z-index:9999}
+    @media (max-width:720px){html,body{padding:20px 12px;align-items:flex-start}.card{padding:18px;margin:0 auto}}
+  </style>
+</head>
+<body>
+  <div class="card" role="region" aria-labelledby="contact-title">
+    <h1 id="contact-title">Contact Us</h1>
+    <form id="contact-form" action="#" method="post">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9+\-() ]*">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Send Message</button>
+      </div>
+    </form>
+
+    <div class="footer">We will respond within 2 business days.</div>
+  </div>
+
+  <div id="id-badge" aria-hidden="true">24Ce052</div>
+</body>
+</html>
