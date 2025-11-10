@@ -32,20 +32,31 @@
     </style>
 </head>
 <body>
-    <p id="para">Hi there 👋</p>
-    <button id="btn">Click Me</button>
+    <!-- <p id="para">Hi there 👋</p>
+    <button id="btn">Click Me</button> -->
+    <button id ="btn">Click</button>
+    <p id="result"></p>
 
     <script>
-        function changetxt() {
-            let para = document.getElementById('para');
-            para.textContent = "✨ You clicked the button! ✨";
-            para.style.color = "green";
+        // function changetxt() {
+        //     let para = document.getElementById('para');
+        //     para.textContent = "✨ You clicked the button! ✨";
+        //     para.style.color = "green";
             
 
-        }
+        // }
 
-        let btn = document.getElementById('btn');
-        btn.addEventListener('click', changetxt);
+        // let btn = document.getElementById('btn');
+        // btn.addEventListener('click', changetxt);
+         let Mybtn=document.getElementById("btn");
+         let Result=document.getElementById("result");
+         
+            let count=0;
+            Mybtn.addEventListener("click",function(){
+                count++;
+                Result.style.colour="green";
+                Result.innerHTML="Button clickes "+ count +" times!";
+            })
          
     </script>
 </body>
