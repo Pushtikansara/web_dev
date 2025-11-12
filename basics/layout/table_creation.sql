@@ -32,19 +32,19 @@ CREATE TABLE Customers (
 );
 
 INSERT INTO Salespeople (snum, sname, city, comm) VALUES
-(1001, 'Peel', 'London', 0.12),
-(1002, 'Serres', 'San Jose', 0.13),
-(1003, 'Motika', 'London', 0.11),
-(1004, 'Rifkin', 'Barcelona', 0.10),
-(1005, 'Axelrod', 'New York', 0.15);
+(1001, 'Rahul', 'London', 0.12),
+(1002, 'Priya', 'San Jose', 0.13),
+(1003, 'Aakash', 'London', 0.11),
+(1004, 'Neelam', 'Barcelona', 0.10),
+(1005, 'Vikram', 'New York', 0.15);
 
 INSERT INTO Customers (cnum, cname, city, rating, snum) VALUES
-(2001, 'Hoffman', 'London', 100, 1001),
-(2002, 'Giovanni', 'Rome', 200, 1003),
-(2003, 'Liu', 'San Jose', 300, 1002),
-(2004, 'Grass', 'Berlin', 100, 1002),
-(2005, 'Clemens', 'London', 230, 1001),
-(2006, 'Pereira', NULL, 150, 1004);
+(2001, 'Sharma', 'London', 100, 1001),
+(2002, 'Singh', 'Rome', 200, 1003),
+(2003, 'Patel', 'San Jose', 300, 1002),
+(2004, 'Kumar', 'Berlin', 100, 1002),
+(2005, 'Gupta', 'London', 230, 1001),
+(2006, 'Rao', NULL, 150, 1004);
 
 SELECT snum, sname, city, comm
 FROM Salespeople;
@@ -84,13 +84,13 @@ WHERE city IS NULL;
 );
 
 INSERT INTO Salespeople (Snum,Sname,city,comm) VALUES
-(1001,Peel,London,0.12),
-(1002,Serres,San Jose,0.13),
-(1003,Motika,London,0.11),
+(1001,Rahul,London,0.12),
+(1002,Priya,San Jose,0.13),
+(1003,Aakash,London,0.11),
 
 INSERT INTO Customer (Cnum,Cname,City,rating,Snum) VALUES
-(2001,Hoffman,London,100,1001),
-(2004,Grass,Berlin,100,1002),
+(2001,Sharma,London,100,1001),
+(2004,Kumar,Berlin,100,1002),
 
 SELECT *
 FROM Customer
